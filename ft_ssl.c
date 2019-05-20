@@ -12,10 +12,18 @@
 
 #include "ft_ssl.h"
 
-int	main(void)
+void	stage_one(unsigned abcd[], unsigned t[])
+{
+	int i;
+
+	i = 0;
+	//STAGE(funF, abcd[0], abcd[1], abcd[2], abcd[3], 0, t[0], 7);
+}
+
+int		main(void)
 {
 	unsigned abcd[4];
-	unsigned t[64] =	{0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+	unsigned t[64] = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 						0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
 						0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
 						0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
@@ -32,11 +40,10 @@ int	main(void)
 						0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
 						0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 
-	
 	abcd[0] = 0x01234567;
 	abcd[1] = 0x89ABCDEF;
 	abcd[2] = 0xFEDCBA98;
 	abcd[3] = 0x76543210;
-	printf("result = %d\n", funF(abcd));
+	printf("result = %d\n", t[1]);
 	return (0);
 }
