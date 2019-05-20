@@ -12,9 +12,9 @@
 
 #include "ft_ssl.h"
 
-unsigned	fun_f(unsigned abcd[])
+unsigned	fun_f(unsigned x, unsigned y, unsigned z)
 {
-	return ((abcd[1] & abcd[2]) | (~abcd[1] & abcd[3]));
+	return ((x & y) | (~x & z));
 }
 
 unsigned	fun_g(unsigned abcd[])

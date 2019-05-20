@@ -12,12 +12,14 @@
 
 #include "ft_ssl.h"
 
-void	stage_one(unsigned abcd[], unsigned t[])
+void	stage_one(unsigned ar[], unsigned t[])
 {
 	int i;
 
 	i = 0;
-	//STAGE(funF, abcd[0], abcd[1], abcd[2], abcd[3], 0, t[0], 7);
+	ar[0] = ar[1] + ((ar[0] + fun_f(ar[1], ar[2], ar[3]) + 0 + t[i++]) << 7);
+	ar[3] = ar[0] + ((ar[3] + fun_f(ar[0], ar[1], ar[2]) + 1 + t[i++]) << 2);
+	
 }
 
 int		main(void)
