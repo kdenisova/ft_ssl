@@ -14,6 +14,7 @@
 # define FT_SSL_H
 
 # include <stdio.h> //DELETE
+# include "libft/libft.h"
 
 unsigned		fun_f(unsigned x, unsigned y, unsigned z);
 unsigned		fun_g(unsigned x, unsigned y, unsigned z);
@@ -22,12 +23,15 @@ unsigned		fun_i(unsigned x, unsigned y, unsigned z);
 
 typedef struct	s_fmd5
 {
-	unsigned	hash[4];
+	unsigned	hash[8];
 	unsigned	bits[2];
+	int			len;
+	int			bitlen;
 }   			t_fmd5;
 
-void			stage_one(t_fmd5 *fmd);
-void			stage_two(t_fmd5 *fmd);
-void			stage_three(t_fmd5 *fmd);
-void			stage_four(t_fmd5 *fmd);
+void			stage_one(t_fmd5 *fmd, unsigned *x);
+void			stage_two(t_fmd5 *fmd, unsigned *x);
+void			stage_three(t_fmd5 *fmd, unsigned *x);
+void			stage_four(t_fmd5 *fmd, unsigned *x);
+
 #endif

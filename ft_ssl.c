@@ -12,21 +12,79 @@
 
 #include "ft_ssl.h"
 
-void	md5_init(t_fmd5 *fmd)
+void	md5_init(t_fmd5 *fmd, char *str)
 {
 	fmd->hash[0] = 0x01234567;
 	fmd->hash[1] = 0x89ABCDEF;
 	fmd->hash[2] = 0xFEDCBA98;
 	fmd->hash[3] = 0x76543210;
+	fmd->hash[4] = 0;
+	fmd->hash[5] = 0;
+	fmd->hash[6] = 0;
+	fmd->hash[7] = 0;
 	fmd->bits[0] = 0;
 	fmd->bits[1] = 0;
+	fmd->len = ft_strlen(str);
+	fmd->bitlen = fmd->len * 8;
+}
+
+unsigned char *transform_data(t_fmd5 *fmd, char *str)
+{
+	int		rem;
+	int		size;
+	int		i;
+	unsigned char	*data;
+
+	rem = fmd->len % 64;
+	size = 0;
+	if (rem < 56)
+		size = fmd->len - rem + 64;
+	else
+		size = fmd->len - rem + 128;
+	data = (unsigned char *)ft_strnew(size);
+	data = (unsigned char *)ft_strncpy((char *)data, str, fmd->len);
+	data[fmd->len] = 1;
+	// fmd->len++;
+	// while (fmd->len < size)
+	// {
+	// 	data[fmd->len] = 0;
+	// 	fmd->len++;
+	// }
+	data = (unsigned char *)ft_strcat((char *)data, (char *)ft_memset(&data[fmd->len + 1], 0, size));
+	i = 0;
+	while (i < 8)
+	{
+		data[size - 8 + i] = (unsigned char)(fmd->bitlen >> i * 8);
+		i++;
+	}
+	//printf("data = %s\nsize = %d\n", data, (int)ft_strlen((char *)data));
+	return (data);
 }
 
 int		main(void)
 {
 	t_fmd5 fmd;
+	char *str = "abc";
+	unsigned *x;
+	int i;
+	//char *str1 = "bc";
 	
-	// unsigned t[64] = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+	md5_init(&fmd, str);
+	x = (unsigned *)ft_strnew(16);
+	x = (unsigned *)transform_data(&fmd, str);
+	stage_one(&fmd, x);
+	i = 0;
+	printf("md5 = ");
+	while (i < 4)
+	{
+		printf("%s", ft_itoa_base(fmd.hash[i], 16));
+		i++;
+	}
+	printf("\n");
+	return (0);
+}
+
+// unsigned t[64] = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	// 					0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
 	// 					0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
 	// 					0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
@@ -43,8 +101,3 @@ int		main(void)
 	// 					0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
 	// 					0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 	//       k s  i		 k s   i		k s   i		   k s   i
-
-	md5_init(&fmd);
-	//printf("result = %d\n", t[1]);
-	return (0);
-}
