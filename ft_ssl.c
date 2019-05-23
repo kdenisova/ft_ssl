@@ -12,10 +12,6 @@
 
 #include "ft_ssl.h"
 
-
-
-
-
 int				main(void)
 {
 	t_fmd5 fmd;
