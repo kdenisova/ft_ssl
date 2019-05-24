@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "ft_ssl.h"
 
 void			md5_init(t_fmd5 *fmd, char *str)
@@ -43,12 +42,6 @@ unsigned char	*md5_update(t_fmd5 *fmd, char *str)
 	data = (unsigned char *)ft_strnew(size);
 	data = (unsigned char *)ft_strncpy((char *)data, str, fmd->len);
 	data[fmd->len] = 0x80;
-	// fmd->len++;
-	// while (fmd->len < size)
-	// {
-	// 	data[fmd->len] = 0;
-	// 	fmd->len++;
-	// }
 	data = (unsigned char *)ft_strcat((char *)data,
 		(char *)ft_memset(&data[fmd->len + 1], 0, size));
 	i = 0;
