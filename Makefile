@@ -8,7 +8,7 @@ SRC = ft_ssl.c parser.c fun_md5.c md5_stages.c md5.c
 all: $(NAME)
 
 $(NAME):
-	@gcc  $(FLAGS) -o $(NAME) $(SRC) libft/libft.a
+	@gcc  $(FLAGS) -o $(NAME) $(SRC) ft_printf/libftprintf.a
 
 clean:
 	@rm -f $(SRC:.c=.o)
