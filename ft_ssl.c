@@ -33,6 +33,8 @@ int				main(int argc, char **argv)
 		{
 			if (!ft_strcmp(flg.alg, "md5"))
 				ft_md5(&fmd, &flg, &al, argv[flg.i]);
+			else
+				ft_sha(&fmd, &flg, &al, argv[flg.i]);
 		}
 		else
 		{

@@ -3,7 +3,7 @@ NAME = ft_ssl
 
 FLAGS = -Wall -Werror -Wextra
 
-SRC = ft_ssl.c parser.c fun_md5.c md5_stages.c md5.c
+SRC = ft_ssl.c parser.c fun_md5.c md5_stages.c md5.c sha.c
 
 all: $(NAME)
 
