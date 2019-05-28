@@ -29,20 +29,32 @@ void	flag_init(t_flg *flg, char *arg)
 		flg->s = 1;
 	else
 	{
-		ft_putstr("Error. Invalid flag. Use the following flags:\n");
-		ft_putstr("\t-p: echo STDIN to STDOUT and append the checksum ");
-		ft_putstr("to STDOUT\n");
-		ft_putstr("\t-q: quiet mode\n");
-		ft_putstr("\t-r: reverse the format of the output\n");
-		ft_putstr("\t-s: print the sum of the given string\n");
+		ft_putstr("usage: md5 [-pqr] [-s string] [files ...]\n");
+		// ft_putstr("\t-p: echo STDIN to STDOUT and append the checksum ");
+		// ft_putstr("to STDOUT\n");
+		// ft_putstr("\t-q: quiet mode\n");
+		// ft_putstr("\t-r: reverse the format of the output\n");
+		// ft_putstr("\t-s: print the sum of the given string\n");
 		exit(1);
 	}
 }
 
-void	parse_string(t_flg *flg, char *arg)
+void	alphabet_init(t_alp *al)
+{
+	al->a = 0;
+	al->b = 0;
+	al->c = 0;
+	al->d = 0;
+	al->e = 0;
+	al->f = 0;
+	al->g = 0;
+	al->h = 0;
+}
+
+void	parse_alg(t_flg *flg, char *arg)
 {
 	if (!ft_strcmp(arg, "md5") || !ft_strcmp(arg, "MD5"))
-		flg->alg = arg;
+		flg->alg = "md5";
 	else if (!ft_strcmp(arg, "sha256") || !ft_strcmp(arg, "SHA256"))
 		flg->alg = "SHA256";
 	else if (!ft_strcmp(arg, "sha512") || !ft_strcmp(arg, "SHA512"))
