@@ -39,7 +39,7 @@ unsigned char	*md5_update(t_fmd5 *fmd, char *str)
 		size = fmd->len - rem + 64;
 	else
 		size = fmd->len - rem + 128;
-	data = (unsigned char *)ft_strnew(size);
+	data = (unsigned char *)ft_strnew(16 * size * 4);
 	data = (unsigned char *)ft_strncpy((char *)data, str, fmd->len);
 	data[fmd->len] = 0x80;
 	data = (unsigned char *)ft_strcat((char *)data,
@@ -74,17 +74,16 @@ unsigned		*md5_final(t_fmd5 *fmd)
 	return (hash);
 }
 
-int			print_md5(unsigned hash[])
+void			put_hash(unsigned hash[], int size)
 {
 	int i;
 
 	i = 0;
-	while (i < 16)
+	while (i < size)
 	{
 		printf("%02x", hash[i]);
 		i++;
 	}
-	return (1);
 }
 
 void	ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
@@ -99,15 +98,15 @@ void	ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 	if (flg->q == 0 && flg->r == 0)
 	{
 		ft_printf("MD5 (\"%s\") = ", arg);
-		print_md5(md5_final(fmd));
+		put_hash(md5_final(fmd), 16);
 	}
 	else if (flg->r)
 	{
-		print_md5(md5_final(fmd));
+		put_hash(md5_final(fmd), 16);
 		//printf(" \"%s\"", argv[flg.i]);
 		ft_printf(" \"%s\" ", arg);
 	}
 	else if(flg->q)
-		print_md5(md5_final(fmd));
+		put_hash(md5_final(fmd), 16);
 	printf("\n");
 }

@@ -47,12 +47,14 @@ typedef struct	s_fmd5
 
 typedef struct 	s_fsha
 {
-	unsigned	h[8];
+	unsigned	hash[8];
 	unsigned	s[2];
 	unsigned	ch;
 	unsigned	maj;
 	unsigned	tmp1;
 	unsigned	tmp2;
+	int			len;
+	int			bitlen;
 	int			r;
 }				t_fsha;
 
@@ -61,21 +63,22 @@ void			parse_flag(t_flg *flg, char *arg);
 void			parse_alg(t_flg *flg, char *arg);
 void			alphabet_init(t_alp *al);
 void			ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg);
-void			ft_sha(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg);
+void			ft_sha(t_flg *flg, t_alp *al, char *arg);
 unsigned		fun_f(unsigned x, unsigned y, unsigned z);
 unsigned		fun_g(unsigned x, unsigned y, unsigned z);
 unsigned		fun_h(unsigned x, unsigned y, unsigned z);
 unsigned		fun_i(unsigned x, unsigned y, unsigned z);
 void			md5_init(t_fmd5 *fmd, char *str);
 unsigned char 	*md5_update(t_fmd5 *fmd, char *str);
-unsigned		rotl(unsigned a, unsigned b);
+unsigned		rl(unsigned a, unsigned b);
 unsigned		rotr(unsigned a, unsigned b);
 void			stage_one(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_two(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_three(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_four(t_fmd5 *fmd, t_alp *a, unsigned *x);
 unsigned		*md5_final(t_fmd5 *fmd);
-int				print_md5(unsigned hash[]);//temp
+void			put_hash(unsigned hash[], int size);//temp
 void    		sha_stages(t_fsha *fsh, t_alp *al, unsigned *w);
+unsigned		*sha_final(t_fsha *fsh, unsigned hash[]);
 
 #endif
