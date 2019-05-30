@@ -1,9 +1,9 @@
 
 NAME = ft_ssl
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
-SRC = ft_ssl.c parser.c fun_md5.c md5_stages.c md5.c sha.c
+SRC = ft_ssl.c parser.c fun_md5.c md5_stages.c md5.c sha.c fun_sha.c
 
 all: $(NAME)
 

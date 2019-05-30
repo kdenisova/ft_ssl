@@ -72,13 +72,17 @@ void			md5_init(t_fmd5 *fmd, char *str);
 unsigned char 	*md5_update(t_fmd5 *fmd, char *str);
 unsigned		rl(unsigned a, unsigned b);
 unsigned		rotr(unsigned a, unsigned b);
+unsigned		revers_data(unsigned b);
 void			stage_one(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_two(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_three(t_fmd5 *fmd, t_alp *a, unsigned *x);
 void			stage_four(t_fmd5 *fmd, t_alp *a, unsigned *x);
 unsigned		*md5_final(t_fmd5 *fmd);
 void			put_hash(unsigned hash[], int size);//temp
+void			sha_init(t_fsha *fsh, t_flg *flg);
+unsigned		*sha_update(t_fsha *fsh, char *str, unsigned int *w);
 void    		sha_stages(t_fsha *fsh, t_alp *al, unsigned *w);
+void			sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w);
 unsigned		*sha_final(t_fsha *fsh, unsigned hash[]);
 
 #endif
