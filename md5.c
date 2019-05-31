@@ -26,12 +26,11 @@ void			md5_init(t_fmd5 *fmd, char *str)
 	fmd->bitlen = fmd->len * 8;
 }
 
-unsigned char	*md5_update(t_fmd5 *fmd, char *str)
+unsigned	*md5_update(t_fmd5 *fmd, char *str, unsigned *x)
 {
 	int				rem;
 	int				size;
 	int				i;
-	unsigned char	*data;
 
 	rem = fmd->len % 64;
 	size = 0;
@@ -39,18 +38,34 @@ unsigned char	*md5_update(t_fmd5 *fmd, char *str)
 		size = fmd->len - rem + 64;
 	else
 		size = fmd->len - rem + 128;
-	data = (unsigned char *)ft_strnew(16 * size * 4);
-	data = (unsigned char *)ft_strncpy((char *)data, str, fmd->len);
-	data[fmd->len] = 0x80;
-	data = (unsigned char *)ft_strcat((char *)data,
-		(char *)ft_memset(&data[fmd->len + 1], 0, size));
+	//size = fmd->len + 1;
+	ft_memcpy((char *)x, str, fmd->len);
+	((char *)x)[fmd->len] = 0x80;
 	i = 0;
-	while (i < 8)
+	printf("\n");
+	while (i < 16)
 	{
-		data[size - 8 + i] = (unsigned char)(fmd->bitlen >> i * 8);
+		printf("%u", x[i]);
 		i++;
 	}
-	return (data);
+	printf("\n");
+	//ft_strcat((char *)x, ft_memset(&x[fmd->len + 1], 0, size));
+	// i = 0;
+	// while (i < 8)
+	// {
+	// 	x[size - 8 + i] = fmd->bitlen >> i * 8;
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\n");
+	// while (i < 16)
+	// {
+	// 	printf("%u", x[i]);
+	// 	i++;
+	// }
+	// printf("\n");
+	// printf("\n%s\n", (char *)x);
+	return (x);
 }
 
 unsigned		*md5_final(t_fmd5 *fmd)
@@ -61,7 +76,7 @@ unsigned		*md5_final(t_fmd5 *fmd)
 
 	i = 0;
 	j = 0;
-	hash = (unsigned *)ft_strnew(16);
+	hash = ft_memalloc(sizeof(unsigned int) * 64);
 	while (i < 16)
 	{
 		hash[i] = (unsigned char)((fmd->hash[j]) & 0xff);
@@ -89,15 +104,32 @@ void			put_hash(unsigned hash[], int size)
 void	ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 {
 	unsigned *x;
+	unsigned w[16];
+	int i;
+	int j;
 
 	md5_init(fmd, arg);
-	x = (unsigned *)ft_strnew(16);
-	x = (unsigned *)md5_update(fmd, arg);
-	x[15] = 0;
-	stage_one(fmd, al, x);
+	x = ft_memalloc(sizeof(unsigned int) * 64);
+	md5_update(fmd, arg, x);
+	i = 0;
+	j = 0;
+	while (i < 16)
+	{
+		w[i] = (x[j]) + (x[j + 1] << 8) + (x[j + 2] << 16) + (x[j + 3] << 24);
+		printf("%u", w[i]);
+		j = j + 4;
+		i++;
+	}
+
+	// for (i=0,j=0; i < 16; ++i, j += 4) 
+    //   m[i] = (data[j]) + (data[j+1] << 8) + (data[j+2] << 16) + (data[j+3] << 24); 
+	//x[15] = 0;
+	stage_one(fmd, al, w);
 	if (flg->q == 0 && flg->r == 0)
 	{
 		ft_printf("MD5 (\"%s\") = ", arg);
+		// md5_final(fmd);
+		// printf("%x%x%x%x\n", fmd->hash[3], fmd->hash[2], fmd->hash[1], fmd->hash[0]);
 		put_hash(md5_final(fmd), 16);
 	}
 	else if (flg->r)
@@ -108,5 +140,6 @@ void	ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 	}
 	else if(flg->q)
 		put_hash(md5_final(fmd), 16);
+	free(x);
 	printf("\n");
 }
