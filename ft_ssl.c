@@ -25,11 +25,11 @@ int				main(int argc, char **argv)
 	}
 	else
 	{
-		parse_alg(&flg,argv[1]);
+		parse_alg(&flg, argv[1]);
 		flag_init(&flg, argv[2]);
 		parse_flag(&flg, argv[3]);
 		alphabet_init(&al);
-		if(flg.s && argv[flg.i])
+		if (flg.s && argv[flg.i])
 		{
 			if (!ft_strcmp(flg.alg, "md5"))
 				ft_md5(&fmd, &flg, &al, argv[flg.i]);

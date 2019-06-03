@@ -130,5 +130,4 @@ void		stage_four(t_fmd5 *fmd, t_alp *a, unsigned *x)
 	fmd->hash[1] += a->b;
 	fmd->hash[2] += a->c;
 	fmd->hash[3] += a->d;
-	printf("\n%u%u%u%u\n", fmd->hash[0], fmd->hash[1], fmd->hash[2], fmd->hash[3]);
 }

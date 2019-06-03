@@ -12,7 +12,7 @@
 
 #include "ft_ssl.h"
 
-void			sha_init(t_fsha *fsh, t_flg *flg)
+void		sha_init(t_fsha *fsh, t_flg *flg)
 {
 	if (!ft_strcmp(flg->alg, "sha256"))
 	{
@@ -60,27 +60,9 @@ unsigned	*sha_update(t_fsha *fsh, char *str, unsigned int *w)
 	return (w);
 }
 
-unsigned		*sha_final(t_fsha *fsh, unsigned hash[])
+void		put_sha(t_fsha *fsh)
 {
-	int			i;
-	int			j;
-	
-	i = 0;
-	j = 0;
-	while (i < 8)
-	{
-		hash[j++] = (unsigned char) (fsh->hash[i] >> 24);
-		hash[j++] = (unsigned char) (fsh->hash[i] >> 16);
-		hash[j++] = (unsigned char) (fsh->hash[i] >> 8);
-		hash[j++] = (unsigned char) fsh->hash[i];
-		i++;
-	}
-	return (hash);
-}
-
-void    print_sha(t_fsha *fsh)
-{
-	int         i;
+	int i;
 
 	i = 0;
 	while (i < 8)
@@ -90,9 +72,9 @@ void    print_sha(t_fsha *fsh)
 	}
 }
 
-void	ft_sha(t_flg *flg, t_alp *al, char *arg)
+void		ft_sha(t_flg *flg, t_alp *al, char *arg)
 {
-	t_fsha          fsh;
+	t_fsha			fsh;
 	unsigned int	*w;
 	int				i;
 
@@ -109,6 +91,17 @@ void	ft_sha(t_flg *flg, t_alp *al, char *arg)
 	}
 	sha_stages(&fsh, al, w);
 	free(w);
-	print_sha(&fsh);
-	printf("\n");
+	if (flg->q == 0 && flg->r == 0)
+	{
+		ft_printf("SHA256 (\"%s\") = ", arg);
+		put_sha(&fsh);
+	}
+	else if (flg->r)
+	{
+		put_sha(&fsh);
+		ft_printf(" \"%s\"", arg);
+	}
+	else if (flg->q)
+		put_sha(&fsh);
+	ft_printf("\n");
 }
