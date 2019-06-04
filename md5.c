@@ -26,31 +26,19 @@ void			md5_init(t_fmd5 *fmd, char *str)
 	fmd->bitlen = fmd->len * 8;
 }
 
-unsigned char	*md5_update(t_fmd5 *fmd, char *str)
+unsigned	*md5_update(t_fmd5 *fmd, char *str, unsigned *x)
 {
-	int				rem;
-	int				size;
-	int				i;
-	unsigned char	*data;
+	int				block_size;
 
-	rem = fmd->len % 64;
-	size = 0;
-	if (rem < 56)
-		size = fmd->len - rem + 64;
-	else
-		size = fmd->len - rem + 128;
-	data = ft_memalloc(sizeof(unsigned char) * 64);
-	data = (unsigned char *)ft_strncpy((char *)data, str, fmd->len);
-	data[fmd->len] = 0x80;
-	data = (unsigned char *)ft_strcat((char *)data,
-		(char *)ft_memset(&data[fmd->len + 1], 0, size));
-	i = 0;
-	while (i < 8)
-	{
-		data[size - 8 + i] = (unsigned char)(fmd->bitlen >> i * 8);
-		i++;
-	}
-	return (data);
+	block_size = 64;
+	ft_memset(x, 0, sizeof(x));
+	ft_memcpy(x, str, fmd->len);
+	((char *)x)[fmd->len] = 0x80;
+	((char *)x)[block_size - 5] = (fmd->bitlen & 0xFF000000) >> 24;
+	((char *)x)[block_size - 6] = (fmd->bitlen & 0x00FF0000) >> 16;
+	((char *)x)[block_size - 7] = (fmd->bitlen & 0x0000FF00) >> 8;
+	((char *)x)[block_size - 8] = (fmd->bitlen & 0x000000FF);
+	return (x);
 }
 
 unsigned		*md5_final(t_fmd5 *fmd)
@@ -64,10 +52,10 @@ unsigned		*md5_final(t_fmd5 *fmd)
 	hash = ft_memalloc(sizeof(unsigned int) * 16);
 	while (i < 16)
 	{
-		hash[i] = (unsigned char)((fmd->hash[j]) & 0xff);
-		hash[i + 1] = (unsigned char)((fmd->hash[j] >> 8) & 0xff);
-		hash[i + 2] = (unsigned char)((fmd->hash[j] >> 16) & 0xff);
-		hash[i + 3] = (unsigned char)((fmd->hash[j] >> 24) & 0xff);
+		hash[i] = (unsigned char)((fmd->hash[j]) & 0xFF);
+		hash[i + 1] = (unsigned char)((fmd->hash[j] >> 8) & 0xFF);
+		hash[i + 2] = (unsigned char)((fmd->hash[j] >> 16) & 0xFF);
+		hash[i + 3] = (unsigned char)((fmd->hash[j] >> 24) & 0xFF);
 		i = i + 4;
 		j++;
 	}
@@ -91,8 +79,8 @@ void			ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 	unsigned *x;
 
 	md5_init(fmd, arg);
-	x = (unsigned *)md5_update(fmd, arg);
-	x[15] = 0;
+	x = ft_memalloc(sizeof(unsigned int) * 64);
+	md5_update(fmd, arg, x);
 	stage_one(fmd, al, x);
 	free(x);
 	if (flg->q == 0 && flg->r == 0)

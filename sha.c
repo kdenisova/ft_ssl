@@ -24,7 +24,7 @@ void		sha_init(t_fsha *fsh, t_flg *flg)
 		fsh->hash[5] = 0x9B05688C;
 		fsh->hash[6] = 0x1F83D9AB;
 		fsh->hash[7] = 0x5BE0CD19;
-		fsh->r = 64;
+		fsh->round = 64;
 	}
 	else
 	{
@@ -36,35 +36,29 @@ void		sha_init(t_fsha *fsh, t_flg *flg)
 	    fsh->hash[5] = 0x9b05688c2b3e6c1f;
 	    fsh->hash[6] = 0x1f83d9abfb41bd6b;
 	    fsh->hash[7] = 0x5be0cd19137e2179;
-	    fsh->r = 80;
+	    fsh->round = 80;
 	}
 }
 
 unsigned	*sha_update(t_fsha *fsh, char *str, unsigned int *w)
 {
 	int i;
-	int size;
 
+	i = 0;
 	fsh->len = ft_strlen(str);
 	fsh->bitlen = fsh->len * 8;
-	size = 1 + ((fsh->bitlen + 16 + 64) / 512);
-	ft_memcpy((char *)w, str, fsh->len);
+	ft_memset(w, 0, sizeof(w));
+	ft_memcpy(w, str, fsh->len);
 	((char *)w)[fsh->len] = 0x80;
-	// size = 448 - (fsh->len + 1);
-	// i = fsh->len + 1;
-	// while (i < size)
-	// {
-	// 	w[i] = 0;
-	// 	i++;
-	// }
-	// w[size] = fsh->bitlen;
-	i = 0;
-	while (i < (size * 16) - 1)
+	((char *)w)[fsh->round - 4] = (fsh->bitlen & 0xFF000000) >> 24;
+	((char *)w)[fsh->round - 3] = (fsh->bitlen & 0x00FF0000) >> 16;
+	((char *)w)[fsh->round - 2] = (fsh->bitlen & 0x0000FF00) >> 8;
+	((char *)w)[fsh->round - 1] = (fsh->bitlen & 0x000000FF);
+	while (i < 16)
 	{
 		w[i] = revers_data(w[i]);
 		i++;
 	}
-	w[((size * 512 - 64) / 32) + 1] = fsh->bitlen;
 	return (w);
 }
 
@@ -93,13 +87,13 @@ void		put_sha(t_flg *flg, t_fsha *fsh)
 
 void		ft_sha256(t_fsha *fsh, t_alp *al, char *arg)
 {
-	unsigned int	*w;
+	unsigned		*w;
 	int				i;
 
 	w = ft_memalloc(sizeof(unsigned int) * 64);
 	sha_update(fsh, arg, w);
 	i = 16;
-	while (i < fsh->r)
+	while (i < fsh->round)
 	{
 		fsh->s[0] = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
 		fsh->s[1] = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >> 10);

@@ -42,7 +42,7 @@ const unsigned long	g_kk[80] = {
 	0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
-unsigned	*sha512_update(t_fsha *fsh, char *str, unsigned int *w)
+unsigned	long *sha512_update(t_fsha *fsh, char *str, unsigned long *w)
 {
 	int i;
 	int size;
@@ -62,12 +62,47 @@ unsigned	*sha512_update(t_fsha *fsh, char *str, unsigned int *w)
 	return (w);
 }
 
-void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
+
+unsigned	long *sha_padding(t_fsha *fsh, char *str, unsigned long *w)
+{
+	int i;
+
+	i = 0;
+	fsh->len = ft_strlen(str);
+	fsh->bitlen = fsh->len * 8;
+	ft_memset(w, 0, sizeof(w));
+	ft_memcpy(w, str, fsh->len);
+	((char *)w)[fsh->len] = 0x80;
+	// ((char *)w)[fsh->round - 8] = (fsh->bitlen) >> 56;
+	// ((char *)w)[fsh->round - 7] = (fsh->bitlen & 0x00FF0000) >> 16;
+	// ((char *)w)[fsh->round - 6] = (fsh->bitlen & 0x0000FF00) >> 8;
+	// ((char *)w)[fsh->round - 5] = (fsh->bitlen & 0x000000FF);
+	// ((char *)w)[fsh->round - 4] = (fsh->bitlen & 0xFF000000) >> 24;
+	// ((char *)w)[fsh->round - 3] = (fsh->bitlen & 0x00FF0000) >> 16;
+	// ((char *)w)[fsh->round - 2] = (fsh->bitlen & 0x0000FF00) >> 8;
+	// ((char *)w)[fsh->round - 1] = (fsh->bitlen & 0x000000FF);
+	((char *)w)[fsh->round - 8] = (fsh->bitlen & 0xFF000000) >> 24;
+	((char *)w)[fsh->round - 7] = (fsh->bitlen & 0x00FF0000) >> 16;
+	((char *)w)[fsh->round - 6] = (fsh->bitlen & 0x0000FF00) >> 8;
+	((char *)w)[fsh->round - 5] = (fsh->bitlen & 0x000000FF);
+	((char *)w)[fsh->round - 4] = (fsh->bitlen & 0xFF000000) >> 24;
+	((char *)w)[fsh->round - 3] = (fsh->bitlen & 0x00FF0000) >> 16;
+	((char *)w)[fsh->round - 2] = (fsh->bitlen & 0x0000FF00) >> 8;
+	((char *)w)[fsh->round - 1] = (fsh->bitlen & 0x000000FF);
+	while (i < 16)
+	{
+		w[i] = revers_data(w[i]);
+		i++;
+	}
+	return (w);
+}
+
+void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
 {
 	int			i;
 
 	i = 0;
-	while (i < fsh->r)
+	while (i < fsh->round)
 	{
 		fsh->s[1] = rotr(al->e, 14) ^ rotr(al->e, 18) ^ rotr(al->e, 41);
 		fsh->ch = (al->e & al->f) ^ (~al->e & al->g);
@@ -87,7 +122,7 @@ void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 	}
 }
 
-void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned *w)
+void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
 {
 	al->a = fsh->hash[0];
 	al->b = fsh->hash[1];
@@ -110,13 +145,14 @@ void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 
 void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
 {
-	unsigned int	*w;
+	unsigned long	*w;
 	int				i;
 
-	w = ft_memalloc(sizeof(unsigned int) * 80);
-	sha_update(fsh, arg, w);
+	w = ft_memalloc(sizeof(unsigned long) * 80);
+	sha_padding(fsh, arg, w);
+	//sha_update(fsh, arg, w);
 	i = 16;
-	while (i < fsh->r)
+	while (i < fsh->round)
 	{
 		fsh->s[0] = rotr(w[i - 15], 1) ^ rotr(w[i - 15], 8) ^ (w[i - 15] >> 7);
 		fsh->s[1] = rotr(w[i - 2], 19) ^ rotr(w[i - 2], 61) ^ (w[i - 2] >> 6);

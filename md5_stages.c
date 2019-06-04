@@ -12,9 +12,9 @@
 
 #include "ft_ssl.h"
 
-unsigned	rl(unsigned a, unsigned b)
+unsigned	rl(unsigned x, unsigned n)
 {
-	return ((a << b) | (a >> (32 - b)));
+	return ((x << n) | (x >> (32 - n)));
 }
 
 void		stage_one(t_fmd5 *fmd, t_alp *a, unsigned *x)

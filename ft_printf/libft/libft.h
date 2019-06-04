@@ -18,6 +18,8 @@
 # include <string.h>
 
 # define HEX		"0123456789abcdef"
+# define BUFF_SIZE	32
+# define FD_MAX		4864
 
 void				*ft_memset(void *ptr, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -84,6 +86,7 @@ char				*ft_strtoupper(char *str);
 int					ft_putbits(unsigned char octet);
 void				ft_putnbrlg(long long int n);
 int					ft_isnegative(long nbr);
+int					get_next_line(const int fd, char **line);
 
 typedef struct		s_list
 {

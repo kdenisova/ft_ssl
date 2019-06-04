@@ -31,15 +31,16 @@ const unsigned	g_k[64] = {
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-unsigned	rotr(unsigned a, unsigned b)
+unsigned	rotr(unsigned x, unsigned n)
 {
-	return ((a >> b) | (a << (32 - b)));
+	return ((x >> n) | (x << (32 - n)));
 }
 
 unsigned	revers_data(unsigned b)
 {
+	//return ((b << 24) | (b << 16) | (b << 8) | b);
 	return ((b >> 24) | ((b & 0xff0000) >> 8) |
-		((b & 0xff00) << 8) | (b << 24));
+	 	((b & 0xff00) << 8) | (b << 24));
 }
 
 void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
@@ -47,7 +48,7 @@ void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 	int			i;
 
 	i = 0;
-	while (i < fsh->r)
+	while (i < fsh->round)
 	{
 		fsh->s[1] = rotr(al->e, 6) ^ rotr(al->e, 11) ^ rotr(al->e, 25);
 		fsh->ch = (al->e & al->f) ^ (~al->e & al->g);

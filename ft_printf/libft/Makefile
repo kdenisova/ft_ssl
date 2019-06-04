@@ -83,7 +83,8 @@ SRC =		ft_memset.c \
 			ft_strtoupper.c \
 			ft_putbits.c \
 			ft_putnbrlg.c \
-			ft_isnegative.c
+			ft_isnegative.c \
+			get_next_line.c
 OBJECTS =	ft_memset.o \
 			ft_bzero.o \
 			ft_memcpy.o \
@@ -155,7 +156,8 @@ OBJECTS =	ft_memset.o \
 			ft_strtoupper.o \
 			ft_putbits.o \
 			ft_putnbrlg.o \
-			ft_isnegative.o
+			ft_isnegative.o \
+			get_next_line.o
 
 all: $(NAME)
 
