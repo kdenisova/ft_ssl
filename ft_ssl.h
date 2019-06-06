@@ -14,7 +14,9 @@
 # define FT_SSL_H
 
 # include <stdio.h> //DELETE
+# include <errno.h>
 # include "ft_printf/ft_printf.h"
+# define BLOCK_SIZE 64
 
 typedef struct	s_flg
 {
@@ -58,6 +60,7 @@ typedef struct		s_fsha
 	int				round;
 }					t_fsha;
 
+int				parse_file(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg);
 void			flag_init(t_flg *flg, char *arg);
 void			parse_flag(t_flg *flg, char *arg);
 void			parse_alg(t_flg *flg, char *arg);
@@ -83,7 +86,7 @@ void			sha_init(t_fsha *fsh, t_flg *flg);
 unsigned		*sha_update(t_fsha *fsh, char *str, unsigned int *w);
 void			sha_stages(t_fsha *fsh, t_alp *al, unsigned *w);
 void			sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w);
-void			sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w);
+void			sha512_rounds(t_fsha *fsh, t_alp *al, unsigned *w);
 void			ft_sha256(t_fsha *fsh, t_alp *al, char *arg);
 void			ft_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void			put_sha(t_flg *flg, t_fsha *fsh);

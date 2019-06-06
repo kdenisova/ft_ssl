@@ -16,9 +16,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+# include <fcntl.h>
 
 # define HEX		"0123456789abcdef"
-# define BUFF_SIZE	32
+# define BUFF_SIZE	56
 # define FD_MAX		4864
 
 void				*ft_memset(void *ptr, int c, size_t len);

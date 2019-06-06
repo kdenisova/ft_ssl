@@ -62,42 +62,72 @@ unsigned	long *sha512_update(t_fsha *fsh, char *str, unsigned long *w)
 	return (w);
 }
 
+void		strrev(unsigned char *str, unsigned long len)
+{
+	char			tmp;
+	unsigned long	i;
 
-unsigned	long *sha_padding(t_fsha *fsh, char *str, unsigned long *w)
+	if (!str || !len)
+		return ;
+	i = 0;
+	--len;
+	while (i < len)
+	{
+		tmp = str[i];
+		str[i] = str[len];
+		str[len] = tmp;
+		++i;
+		--len;
+	}
+}
+
+unsigned	*sha_padding(t_fsha *fsh, char *str, unsigned *w)
 {
 	int i;
+	int				block_size;
+
+	//int	len;
 
 	i = 0;
+	block_size = 128;
 	fsh->len = ft_strlen(str);
 	fsh->bitlen = fsh->len * 8;
 	ft_memset(w, 0, sizeof(w));
 	ft_memcpy(w, str, fsh->len);
 	((char *)w)[fsh->len] = 0x80;
-	// ((char *)w)[fsh->round - 8] = (fsh->bitlen) >> 56;
-	// ((char *)w)[fsh->round - 7] = (fsh->bitlen & 0x00FF0000) >> 16;
-	// ((char *)w)[fsh->round - 6] = (fsh->bitlen & 0x0000FF00) >> 8;
-	// ((char *)w)[fsh->round - 5] = (fsh->bitlen & 0x000000FF);
-	// ((char *)w)[fsh->round - 4] = (fsh->bitlen & 0xFF000000) >> 24;
-	// ((char *)w)[fsh->round - 3] = (fsh->bitlen & 0x00FF0000) >> 16;
-	// ((char *)w)[fsh->round - 2] = (fsh->bitlen & 0x0000FF00) >> 8;
-	// ((char *)w)[fsh->round - 1] = (fsh->bitlen & 0x000000FF);
-	((char *)w)[fsh->round - 8] = (fsh->bitlen & 0xFF000000) >> 24;
-	((char *)w)[fsh->round - 7] = (fsh->bitlen & 0x00FF0000) >> 16;
-	((char *)w)[fsh->round - 6] = (fsh->bitlen & 0x0000FF00) >> 8;
-	((char *)w)[fsh->round - 5] = (fsh->bitlen & 0x000000FF);
-	((char *)w)[fsh->round - 4] = (fsh->bitlen & 0xFF000000) >> 24;
-	((char *)w)[fsh->round - 3] = (fsh->bitlen & 0x00FF0000) >> 16;
-	((char *)w)[fsh->round - 2] = (fsh->bitlen & 0x0000FF00) >> 8;
-	((char *)w)[fsh->round - 1] = (fsh->bitlen & 0x000000FF);
-	while (i < 16)
+	((char *)w)[block_size - 1] = (fsh->bitlen & 0xFF00000000000000) >> 56;
+	((char *)w)[block_size - 2] = (fsh->bitlen & 0x00FF000000000000) >> 48;
+	((char *)w)[block_size - 3] = (fsh->bitlen & 0x0000FF0000000000) >> 40;
+	((char *)w)[block_size - 4] = (fsh->bitlen & 0x000000FF00000000) >> 32;
+	((char *)w)[block_size - 5] = (fsh->bitlen & 0x00000000FF000000) >> 24;
+	((char *)w)[block_size - 6] = (fsh->bitlen & 0x0000000000FF0000) >> 16;
+	((char *)w)[block_size - 7] = (fsh->bitlen & 0x000000000000FF00) >> 8;
+	((char *)w)[block_size - 8] = (fsh->bitlen & 0x00000000000000FF);
+	((char *)w)[block_size - 9] = (fsh->bitlen & 0xFF00000000000000) >> 56;
+	((char *)w)[block_size - 10] = (fsh->bitlen & 0x00FF000000000000) >> 48;
+	((char *)w)[block_size - 11] = (fsh->bitlen & 0x0000FF0000000000) >> 40;
+	((char *)w)[block_size - 12] = (fsh->bitlen & 0x000000FF00000000) >> 32;
+	((char *)w)[block_size - 13] = (fsh->bitlen & 0x00000000FF000000) >> 24;
+	((char *)w)[block_size - 14] = (fsh->bitlen & 0x0000000000FF0000) >> 16;
+	((char *)w)[block_size - 15] = (fsh->bitlen & 0x000000000000FF00) >> 8;
+	((char *)w)[block_size - 16] = (fsh->bitlen & 0x00000000000000FF);
+	while (i < 32)
 	{
 		w[i] = revers_data(w[i]);
 		i++;
 	}
+	
+	// len = (fsh->len / 8 + 1) * 8;
+	// while (i < len)
+	// {
+	// 	strrev((unsigned char *)w + i, 8);
+	// 	i += 8;
+	// }
+	
 	return (w);
 }
 
-void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
+void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 {
 	int			i;
 
@@ -122,7 +152,7 @@ void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
 	}
 }
 
-void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
+void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 {
 	al->a = fsh->hash[0];
 	al->b = fsh->hash[1];
@@ -145,10 +175,10 @@ void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
 
 void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
 {
-	unsigned long	*w;
+	unsigned	*w;
 	int				i;
 
-	w = ft_memalloc(sizeof(unsigned long) * 80);
+	w = ft_memalloc(sizeof(unsigned int) * 80);
 	sha_padding(fsh, arg, w);
 	//sha_update(fsh, arg, w);
 	i = 16;
@@ -159,6 +189,12 @@ void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
 		w[i] = w[i - 16] + fsh->s[0] + w[i - 7] + fsh->s[1];
 		i++;
 	}
+	// i = 0;
+	// while (i < 80)
+	// {
+	// 	printf("%u\n", w[i]);
+	// 	i++;
+	// }
 	sha512_stages(fsh, al, w);
 	free(w);
 }

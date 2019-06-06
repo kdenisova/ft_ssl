@@ -77,7 +77,8 @@ LIBFT = libft/ft_memset.c \
 			libft/ft_strtoupper.c \
 			libft/ft_putbits.c \
 			libft/ft_putnbrlg.c \
-			libft/ft_isnegative.c
+			libft/ft_isnegative.c \
+			libft/get_next_line.c
 
 all: $(NAME)
 
