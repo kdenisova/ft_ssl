@@ -25,6 +25,8 @@ typedef struct	s_flg
 	int			r;
 	int			s;
 	int			i;
+	int			fd;
+	char		*fdname;
 	char		*alg;
 }				t_flg;
 
@@ -72,7 +74,7 @@ unsigned		fun_g(unsigned x, unsigned y, unsigned z);
 unsigned		fun_h(unsigned x, unsigned y, unsigned z);
 unsigned		fun_i(unsigned x, unsigned y, unsigned z);
 void			md5_init(t_fmd5 *fmd, char *str);
-unsigned		*md5_update(t_fmd5 *fmd, char *str, unsigned *x);
+unsigned		*md5_update(t_fmd5 *fmd, unsigned *x);
 unsigned		rl(unsigned x, unsigned n);
 unsigned		rotr(unsigned x, unsigned n);
 unsigned		revers_data(unsigned b);

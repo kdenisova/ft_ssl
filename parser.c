@@ -18,6 +18,7 @@ void	flag_init(t_flg *flg, char *arg)
 	flg->q = 0;
 	flg->r = 0;
 	flg->s = 0;
+	flg->fd = 0;
 	flg->i = 0;
 	if (!ft_strcmp(arg, "-p"))
 		flg->p = 1;
@@ -27,6 +28,9 @@ void	flag_init(t_flg *flg, char *arg)
 		flg->r = 1;
 	else if (!ft_strcmp(arg, "-s"))
 		flg->s = 1;
+	else
+		flg->fd = 1;
+	
 	// else
 	// {
 	// 	ft_putstr("usage: md5 [-pqr] [-s string] [files ...]\n");
