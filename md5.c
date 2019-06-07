@@ -12,7 +12,7 @@
 
 #include "ft_ssl.h"
 
-void			md5_init(t_fmd5 *fmd, char *str)
+void			md5_init(t_fmd5 *fmd, char *str, int len)
 {
 	fmd->hash[0] = 0x67452301;
 	fmd->hash[1] = 0xEFCDAB89;
@@ -22,11 +22,41 @@ void			md5_init(t_fmd5 *fmd, char *str)
 	fmd->hash[5] = 0;
 	fmd->hash[6] = 0;
 	fmd->hash[7] = 0;
-	fmd->len = ft_strlen(str);
+	if (len)
+		fmd->len = len;
+	else
+		fmd->len = ft_strlen(str);
 	fmd->bitlen = fmd->len * 8;
 }
 
-unsigned	*md5_update(t_fmd5 *fmd, unsigned *x)
+char			*get_block_md5(t_fmd5 *fmd, t_alp *al, char *arg)
+{
+	unsigned	*x;
+
+	while (fmd->len >= BLOCK_SIZE - 8)
+	{
+		if (fmd->len < BLOCK_SIZE)
+		{
+			x = ft_memalloc(sizeof(unsigned int) * 64);
+			ft_memset(x, 0, sizeof(x));
+			ft_memcpy(x, arg, fmd->len);
+			((char *)x)[fmd->len] = 0x80;
+			stage_one(fmd, al, x);
+			arg = arg + fmd->len;
+			fmd->len = -1;
+			free(x);
+		}
+		else
+		{
+			stage_one(fmd, al, (unsigned *)arg);
+			arg = arg + BLOCK_SIZE;
+			fmd->len -= BLOCK_SIZE;
+		}
+	}
+	return (arg);
+}
+
+unsigned		*md5_update(t_fmd5 *fmd, unsigned *x)
 {
 	((char *)x)[BLOCK_SIZE - 5] = (fmd->bitlen & 0xFF000000) >> 24;
 	((char *)x)[BLOCK_SIZE - 6] = (fmd->bitlen & 0x00FF0000) >> 16;
@@ -56,76 +86,23 @@ unsigned		*md5_final(t_fmd5 *fmd)
 	return (hash);
 }
 
-void			put_md5(unsigned *hash)
+void			ft_md5(t_flg *flg, t_alp *al, char *arg, int len)
 {
-	int i;
+	t_fmd5		fmd;
+	unsigned	*x;
 
-	i = 0;
-	while (i < 16)
-	{
-		ft_printf("%02x", hash[i]);
-		i++;
-	}
-}
-
-void			ft_md5(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
-{
-	unsigned *x;
-	int		i;
-
-	i = 0;
-	md5_init(fmd, arg);
-	// printf("\nstr = %s\n", arg);
-	// printf("len = %d\n", fmd->len);
-	while (fmd->len >= BLOCK_SIZE - 8)
-	{
-		if (fmd->len < BLOCK_SIZE)
-		{
-			x = ft_memalloc(sizeof(unsigned int) * 64);
-			ft_memset(x, 0, sizeof(x));
-			ft_memcpy(x, arg, fmd->len);
-			((char *)x)[fmd->len] = 0x80;
-			stage_one(fmd, al, x);
-			arg = arg + fmd->len;
-			fmd->len = -1;
-			free(x);
-		}
-		else
-		{
-			stage_one(fmd, al, (unsigned *)arg);
-			arg = arg + BLOCK_SIZE;
-			fmd->len -= BLOCK_SIZE;
-		}
-		// printf("\nstr = %s\n", arg);
-		// printf("len = %d\n", fmd->len);
-	}
+	md5_init(&fmd, arg, len);
+	if (fmd.len >= BLOCK_SIZE - 8)
+		arg = get_block_md5(&fmd, al, arg);
 	x = ft_memalloc(sizeof(unsigned int) * 64);
 	ft_memset(x, 0, sizeof(x));
-	if (fmd->len >= 0)
+	if (fmd.len >= 0)
 	{
-		ft_memcpy(x, arg, fmd->len);
-		((char *)x)[fmd->len] = 0x80;
+		ft_memcpy(x, arg, fmd.len);
+		((char *)x)[fmd.len] = 0x80;
 	}
-	md5_update(fmd, x);
-	stage_one(fmd, al, x);
+	md5_update(&fmd, x);
+	stage_one(&fmd, al, x);
 	free(x);
-	if (flg->q == 0 && flg->r == 0)
-	{
-		if (flg->fd)
-			ft_printf("MD5 (%s) = ", flg->fdname);
-		else
-			ft_printf("MD5 (\"%s\") = ", arg);
-		put_md5(md5_final(fmd));
-	}
-	else if (flg->r)
-	{
-		put_md5(md5_final(fmd));
-		ft_printf(" \"%s\"", arg);
-	}
-	else if (flg->q)
-	{
-		put_md5(md5_final(fmd));
-		printf("\n");
-	}
-	printf("\n");
+	put_md5(flg, &fmd, arg);
 }

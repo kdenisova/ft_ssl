@@ -12,13 +12,14 @@
 
 #include "ft_ssl.h"
 
-int	parse_file(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
+int	parse_file(t_flg *flg, t_alp *al, char *arg)
 {
 	char	*line;
 	char	*str;
 	int		fd;
-	int		ret;
+	int		len;
 
+	len = 0;
 	fd = open(arg, O_RDONLY);
 	if (fd < 0)
 	{
@@ -31,20 +32,21 @@ int	parse_file(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 	else
 	{
 		flg->fdname = arg;
+		str = ft_strdup("");
 		line = ft_strnew(BLOCK_SIZE);
-		while ((ret = read(fd, line, BLOCK_SIZE)) > 0)
+		while ((len = read(fd, line, BLOCK_SIZE)) > 0)
 		{
-			line[ret] = '\0';
+			line[len] = '\0';
 			str = ft_strjoin(str, line);
 			ft_strdel(&line);
-			if (ret == BLOCK_SIZE)
+			if (len == BLOCK_SIZE)
 				line = ft_strnew(BLOCK_SIZE);
 		}
 		if (line)
 			ft_strdel(&line);
 		close(fd);
 		if (!ft_strcmp(flg->alg, "md5"))
-			ft_md5(fmd, flg, al, str);
+			ft_md5(flg, al, str, len);
 		else
 			ft_sha(flg, al, str);
 	}
@@ -53,7 +55,6 @@ int	parse_file(t_fmd5 *fmd, t_flg *flg, t_alp *al, char *arg)
 
 int	main(int argc, char **argv)
 {
-	t_fmd5	fmd;
 	t_flg	flg;
 	t_alp	al;
 
@@ -71,7 +72,7 @@ int	main(int argc, char **argv)
 		if (flg.s && argv[flg.i])
 		{
 			if (!ft_strcmp(flg.alg, "md5"))
-				ft_md5(&fmd, &flg, &al, argv[flg.i]);
+				ft_md5(&flg, &al, argv[flg.i], 0);
 			else
 				ft_sha(&flg, &al, argv[flg.i]);
 		}
@@ -82,7 +83,7 @@ int	main(int argc, char **argv)
 			exit(1);
 		}
 		else if (flg.fd)
-			parse_file(&fmd, &flg, &al, argv[flg.i]);
+			parse_file(&flg, &al, argv[flg.i]);
 		else
 		{
 			ft_printf("usage: ./ft_ssl [hash_function] [-pqr] [-s string] [files ...]\n");
