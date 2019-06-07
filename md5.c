@@ -94,6 +94,7 @@ void			ft_md5(t_flg *flg, t_alp *al, char *arg, int len)
 	md5_init(&fmd, arg, len);
 	if (fmd.len >= BLOCK_SIZE - 8)
 		arg = get_block_md5(&fmd, al, arg);
+	printf("\nstr = %s\n", arg);
 	x = ft_memalloc(sizeof(unsigned int) * 64);
 	ft_memset(x, 0, sizeof(x));
 	if (fmd.len >= 0)

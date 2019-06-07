@@ -48,7 +48,7 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 		if (!ft_strcmp(flg->alg, "md5"))
 			ft_md5(flg, al, str, len);
 		else
-			ft_sha(flg, al, str);
+			ft_sha(flg, al, str, len);
 	}
 	return (0);
 }
@@ -74,7 +74,7 @@ int	main(int argc, char **argv)
 			if (!ft_strcmp(flg.alg, "md5"))
 				ft_md5(&flg, &al, argv[flg.i], 0);
 			else
-				ft_sha(&flg, &al, argv[flg.i]);
+				ft_sha(&flg, &al, argv[flg.i], 0);
 		}
 		else if (flg.s && !argv[flg.i])
 		{
