@@ -17,6 +17,7 @@
 # include <errno.h>
 # include "ft_printf/ft_printf.h"
 # define BLOCK_SIZE 64
+# define BLOCK_SIZE_SHA 128
 
 typedef struct	s_flg
 {
@@ -58,7 +59,7 @@ typedef struct		s_fsha
 	unsigned		tmp1;
 	unsigned		tmp2;
 	int				len;
-	int				bitlen;
+	__uint128_t		bitlen;
 	int				round;
 }					t_fsha;
 
@@ -88,9 +89,13 @@ void			put_md5(t_flg *flg, t_fmd5 *fmd, char *arg);
 void			put_hash(unsigned *hash);
 void			sha_init(t_fsha *fsh, t_flg *flg);
 unsigned		*sha_update(t_fsha *fsh, unsigned int *w);
+unsigned long long 		*sha512_update(t_fsha *fsh, unsigned long long *w);
 void			sha_stages(t_fsha *fsh, t_alp *al, unsigned *w);
 void			sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w);
-void			sha512_rounds(t_fsha *fsh, t_alp *al, unsigned *w);
+unsigned long long		*sha_padding(t_fsha *fsh, unsigned long long *w);
+void			sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long long *w);
+char			*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg);
+char			*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void			ft_sha256(t_fsha *fsh, t_alp *al, char *arg);
 void			ft_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void			put_sha(t_flg *flg, t_fsha *fsh, char *arg);
