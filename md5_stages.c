@@ -12,11 +12,6 @@
 
 #include "ft_ssl.h"
 
-unsigned	rl(unsigned x, unsigned n)
-{
-	return ((x << n) | (x >> (32 - n)));
-}
-
 void		stage_one(t_fmd5 *fmd, t_alp *a, unsigned *x)
 {
 	a->a = fmd->hash[0];

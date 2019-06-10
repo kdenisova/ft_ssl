@@ -31,3 +31,8 @@ unsigned	fun_i(unsigned x, unsigned y, unsigned z)
 {
 	return (y ^ (~z | x));
 }
+
+unsigned	rl(unsigned x, unsigned n)
+{
+	return ((x << n) | (x >> (32 - n)));
+}

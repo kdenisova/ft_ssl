@@ -40,7 +40,7 @@ unsigned	revers_data(unsigned b)
 {
 	//return ((b << 24) | (b << 16) | (b << 8) | b);
 	return ((b >> 24) | ((b & 0xff0000) >> 8) |
-	 	((b & 0xff00) << 8) | (b << 24));
+		((b & 0xff00) << 8) | (b << 24));
 }
 
 void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
@@ -70,6 +70,7 @@ void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 
 void		sha_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 {
+	sha_update(fsh, w);
 	al->a = fsh->hash[0];
 	al->b = fsh->hash[1];
 	al->c = fsh->hash[2];
