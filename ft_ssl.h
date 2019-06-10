@@ -53,11 +53,11 @@ typedef struct	s_fmd5
 typedef struct		s_fsha
 {
 	unsigned long	hash[8];
-	unsigned		s[2];
-	unsigned		ch;
-	unsigned		maj;
-	unsigned		tmp1;
-	unsigned		tmp2;
+	unsigned long	s[2];
+	unsigned long	ch;
+	unsigned long	maj;
+	unsigned long	tmp1;
+	unsigned long	tmp2;
 	int				len;
 	__uint128_t		bitlen;
 	int				round;

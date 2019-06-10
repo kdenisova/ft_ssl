@@ -38,7 +38,6 @@ unsigned	rotr(unsigned x, unsigned n)
 
 unsigned	revers_data(unsigned b)
 {
-	//return ((b << 24) | (b << 16) | (b << 8) | b);
 	return ((b >> 24) | ((b & 0xff0000) >> 8) |
 		((b & 0xff00) << 8) | (b << 24));
 }

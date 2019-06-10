@@ -73,7 +73,7 @@ void		put_hash_sha(t_flg *flg, t_fsha *fsh)
 	{
 		while (i < 8)
 		{
-			ft_printf("%02x", fsh->hash[i]);
+			ft_printf("%08x", fsh->hash[i]);
 			i++;
 		}
 	}
@@ -81,7 +81,7 @@ void		put_hash_sha(t_flg *flg, t_fsha *fsh)
 	{
 		while (i < 8)
 		{
-			ft_printf("%02lx", fsh->hash[i]);
+			ft_printf("%016lx", fsh->hash[i]);
 			i++;
 		}
 	}
