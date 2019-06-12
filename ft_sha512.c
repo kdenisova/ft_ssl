@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fun_sha512.c                                       :+:      :+:    :+:   */
+/*   ft_sha512.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdenisov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -42,7 +42,7 @@ const unsigned long	g_kk[80] = {
 	0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
-unsigned long *sha512_update(t_fsha *fsh, unsigned long *w)
+unsigned long	*sha512_update(t_fsha *fsh, unsigned long *w)
 {
 	int i;
 
@@ -88,7 +88,7 @@ unsigned long	*sha_padding(t_fsha *fsh, unsigned long *w)
 	return (w);
 }
 
-void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
+void			sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
 {
 	int			i;
 
@@ -113,7 +113,7 @@ void		sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w)
 	}
 }
 
-void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
+void			sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
 {
 	sha512_update(fsh, w);
 	al->a = fsh->hash[0];
@@ -135,7 +135,7 @@ void		sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w)
 	fsh->hash[7] += al->h;
 }
 
-char		*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg)
+char			*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg)
 {
 	unsigned long	*w;
 
@@ -161,21 +161,4 @@ char		*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg)
 		free(w);
 	}
 	return (arg);
-}
-
-void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
-{
-	unsigned long	*w;
-
-	if (fsh->len >= BLOCK_SIZE_SHA - 16)
-		arg = get_block_sha512(fsh, al, arg);
-	w = ft_memalloc(sizeof(unsigned long) * 80);
-	ft_memset(w, 0, sizeof(w));
-	if (fsh->len >= 0)
-	{
-		ft_memcpy(w, arg, fsh->len);
-		((char *)w)[fsh->len] = 0x80;
-	}
-	sha512_stages(fsh, al, w);
-	free(w);
 }
