@@ -16,14 +16,14 @@ void		sha_init(t_fsha *fsh, t_flg *flg)
 {
 	if (!ft_strcmp(flg->alg, "sha256"))
 	{
-		fsh->hash[0] = 0x6A09E667;
-		fsh->hash[1] = 0xBB67AE85;
-		fsh->hash[2] = 0x3C6EF372;
-		fsh->hash[3] = 0xA54FF53A;
-		fsh->hash[4] = 0x510E527F;
-		fsh->hash[5] = 0x9B05688C;
-		fsh->hash[6] = 0x1F83D9AB;
-		fsh->hash[7] = 0x5BE0CD19;
+		fsh->hash[0] = 0x6a09e667;
+		fsh->hash[1] = 0xbb67ae85;
+		fsh->hash[2] = 0x3c6ef372;
+		fsh->hash[3] = 0xa54ff53a;
+		fsh->hash[4] = 0x510e527f;
+		fsh->hash[5] = 0x9b05688c;
+		fsh->hash[6] = 0x1f83d9ab;
+		fsh->hash[7] = 0x5be0cd19;
 		fsh->round = 64;
 	}
 	else
@@ -47,7 +47,7 @@ unsigned	*sha_update(t_fsha *fsh, unsigned int *w)
 	i = 0;
 	while (i < 16)
 	{
-		w[i] = revers_data(w[i]);
+		w[i] = revers_bits(w[i]);
 		i++;
 	}
 	while (i < fsh->round)

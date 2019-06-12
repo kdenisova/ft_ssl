@@ -15,8 +15,8 @@
 void			md5_init(t_fmd5 *fmd, char *str, int len)
 {
 	fmd->hash[0] = 0x67452301;
-	fmd->hash[1] = 0xEFCDAB89;
-	fmd->hash[2] = 0x98BADCFE;
+	fmd->hash[1] = 0xefcdab89;
+	fmd->hash[2] = 0x98badcfe;
 	fmd->hash[3] = 0x10325476;
 	fmd->hash[4] = 0;
 	fmd->hash[5] = 0;
