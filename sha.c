@@ -12,7 +12,7 @@
 
 #include "ft_ssl.h"
 
-void		sha_init(t_fsha *fsh, t_flg *flg)
+void	sha_init(t_fsha *fsh, t_flg *flg)
 {
 	if (!ft_strcmp(flg->alg, "sha256"))
 	{
@@ -40,9 +40,9 @@ void		sha_init(t_fsha *fsh, t_flg *flg)
 	}
 }
 
-void		ft_sha256(t_fsha *fsh, t_alp *al, char *arg)
+void	ft_sha256(t_fsha *fsh, t_alp *al, char *arg)
 {
-	unsigned		*w;
+	unsigned *w;
 
 	if (fsh->len >= BLOCK_SIZE - 8)
 		arg = get_block_sha256(fsh, al, arg);
@@ -63,9 +63,9 @@ void		ft_sha256(t_fsha *fsh, t_alp *al, char *arg)
 
 void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
 {
-	unsigned long	*w;
+	unsigned long *w;
 
-	if (fsh->len >= BLOCK_SIZE_SHA - 16)
+	if (fsh->len >= SIZE_SHA - 16)
 		arg = get_block_sha512(fsh, al, arg);
 	w = ft_memalloc(sizeof(unsigned long) * 80);
 	ft_memset(w, 0, sizeof(w));
@@ -78,9 +78,9 @@ void	ft_sha512(t_fsha *fsh, t_alp *al, char *arg)
 	free(w);
 }
 
-void		ft_sha(t_flg *flg, t_alp *al, char *arg, int len)
+void	ft_sha(t_flg *flg, t_alp *al, char *arg, int len)
 {
-	t_fsha			fsh;
+	t_fsha fsh;
 
 	sha_init(&fsh, flg);
 	if (len)

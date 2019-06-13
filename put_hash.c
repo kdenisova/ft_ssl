@@ -12,9 +12,15 @@
 
 #include "ft_ssl.h"
 
-void			put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
+void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 {
-	if (flg->q == 0 && flg->r == 0)
+	if (flg->in)
+	{
+		if (flg->p)
+			ft_printf("%s", arg);
+		put_hash(md5_final(fmd));
+	}
+	else if (flg->q == 0 && flg->r == 0)
 	{
 		if (flg->fd)
 			ft_printf("MD5 (%s) = ", flg->fdname);
@@ -35,7 +41,7 @@ void			put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 	ft_putchar('\n');
 }
 
-void			put_hash(unsigned *hash)
+void	put_hash(unsigned *hash)
 {
 	int			i;
 
@@ -47,14 +53,23 @@ void			put_hash(unsigned *hash)
 	}
 }
 
-void		put_sha(t_flg *flg, t_fsha *fsh, char *arg)
+void	put_sha(t_flg *flg, t_fsha *fsh, char *arg)
 {
-	if (flg->q == 0 && flg->r == 0)
+	char *alg;
+
+	alg = ft_strdup(flg->alg);
+	if (flg->in)
+	{
+		if (flg->p)
+			ft_printf("%s", arg);
+		put_hash_sha(flg, fsh);
+	}
+	else if (flg->q == 0 && flg->r == 0)
 	{
 		if (flg->fd)
-			ft_printf("SHA256(%s)= ", flg->fdname);
+			ft_printf("%s(%s)= ", ft_strtoupper(alg), flg->fdname);
 		else
-			ft_printf("SHA256(\"%s\")= ", arg);
+			ft_printf("%s(\"%s\")= ", ft_strtoupper(alg), arg);
 		put_hash_sha(flg, fsh);
 	}
 	else if (flg->r)
@@ -68,9 +83,10 @@ void		put_sha(t_flg *flg, t_fsha *fsh, char *arg)
 	else if (flg->q)
 		put_hash_sha(flg, fsh);
 	ft_putchar('\n');
+	free(alg);
 }
 
-void		put_hash_sha(t_flg *flg, t_fsha *fsh)
+void	put_hash_sha(t_flg *flg, t_fsha *fsh)
 {
 	int i;
 
@@ -92,5 +108,3 @@ void		put_hash_sha(t_flg *flg, t_fsha *fsh)
 		}
 	}
 }
-
-

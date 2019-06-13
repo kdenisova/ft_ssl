@@ -17,7 +17,7 @@ unsigned		rotr(unsigned x, unsigned n)
 	return ((x >> n) | (x << (32 - n)));
 }
 
-unsigned long	rotr_64(unsigned long x, unsigned long n)
+unsigned long	r_64(unsigned long x, unsigned long n)
 {
 	return ((x >> n) | (x << (64 - n)));
 }

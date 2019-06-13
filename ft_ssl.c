@@ -20,7 +20,6 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 	int		len;
 	struct	stat statbuf;
 
-
 	len = 0;
 	fd = open(arg, O_RDONLY);
 	fstat(fd, &statbuf);
@@ -58,6 +57,32 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 	return (0);
 }
 
+void	parse_stdin(t_flg *flg, t_alp *al)
+{
+	char	*line;
+	char	*str;
+	int		len;
+
+	len = 0;
+	flg->in = 1;
+	str = ft_strdup("");
+	line = ft_strnew(BLOCK_SIZE);
+	while ((len = read(0, line, BLOCK_SIZE)) > 0)
+	{
+		line[len] = '\0';
+		str = ft_strjoin(str, line);
+		ft_strdel(&line);
+		if (len == BLOCK_SIZE)
+			line = ft_strnew(BLOCK_SIZE);
+	}
+	if (line)
+		ft_strdel(&line);
+	if (!ft_strcmp(flg->alg, "md5"))
+		ft_md5(flg, al, str, len);
+	else
+		ft_sha(flg, al, str, len);
+}
+
 int	main(int argc, char **argv)
 {
 	t_flg	flg;
@@ -72,7 +97,6 @@ int	main(int argc, char **argv)
 	{
 		parse_alg(&flg, argv[1]);
 		flag_init(&flg, argv, argc);
-		//parse_flag(&flg, argv[3]);
 		alphabet_init(&al);
 		if (flg.s && argv[flg.i])
 		{
@@ -84,14 +108,18 @@ int	main(int argc, char **argv)
 		else if (flg.s && !argv[flg.i])
 		{
 			ft_printf("%s: option requires an argument -- s\n", flg.alg);
-			ft_printf("usage: ./ft_ssl [hash_function] [-pqr] [-s string] [files ...]\n");
+			ft_printf("usage: ./ft_ssl [hash_function] [-pqr] ");
+			ft_printf("[-s string] [files ...]\n");
 			exit(1);
 		}
 		else if (flg.fd)
 			parse_file(&flg, &al, argv[flg.i]);
+		else if (flg.p || argc == 2)
+			parse_stdin(&flg, &al);
 		else
 		{
-			ft_printf("usage: ./ft_ssl [hash_function] [-pqr] [-s string] [files ...]\n");
+			ft_printf("usage: ./ft_ssl [hash_function] ");
+			ft_printf("[-pqr] [-s string] [files ...]\n");
 			exit(1);
 		}
 	}
