@@ -67,13 +67,14 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 	flg->in = 1;
 	str = ft_strdup("");
 	line = ft_strnew(BLOCK_SIZE);
-	while ((len = read(0, line, BLOCK_SIZE)) > 0)
+	len = read(0, line, BLOCK_SIZE);
+	while (len > 0)
 	{
 		line[len] = '\0';
 		str = ft_strjoin(str, line);
 		ft_strdel(&line);
-		if (len == BLOCK_SIZE)
-			line = ft_strnew(BLOCK_SIZE);
+		line = ft_strnew(BLOCK_SIZE);
+		len = read(0, line, BLOCK_SIZE);
 	}
 	if (line)
 		ft_strdel(&line);
@@ -114,7 +115,7 @@ int	main(int argc, char **argv)
 		}
 		else if (flg.fd)
 			parse_file(&flg, &al, argv[flg.i]);
-		else if (flg.p || argc == 2)
+		else if (flg.p || argc == 2 || (!flg.fd && !flg.s))
 			parse_stdin(&flg, &al);
 		else
 		{
