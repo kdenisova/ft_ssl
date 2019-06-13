@@ -15,6 +15,7 @@
 
 # include <stdio.h> //DELETE
 # include <errno.h>
+# include <sys/stat.h>
 # include "ft_printf/ft_printf.h"
 # define BLOCK_SIZE 64
 # define BLOCK_SIZE_SHA 128
@@ -64,7 +65,7 @@ typedef struct		s_fsha
 }					t_fsha;
 
 int				parse_file(t_flg *flg, t_alp *al, char *arg);
-void			flag_init(t_flg *flg, char *arg);
+void			flag_init(t_flg *flg, char **arg, int argv);
 void			parse_flag(t_flg *flg, char *arg);
 void			parse_alg(t_flg *flg, char *arg);
 void			alphabet_init(t_alp *al);

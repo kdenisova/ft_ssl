@@ -17,15 +17,18 @@ void			put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 	if (flg->q == 0 && flg->r == 0)
 	{
 		if (flg->fd)
-			ft_printf("MD5(%s)= ", flg->fdname);
+			ft_printf("MD5 (%s) = ", flg->fdname);
 		else
-			ft_printf("MD5(\"%s\")= ", arg);
+			ft_printf("MD5 (\"%s\") = ", arg);
 		put_hash(md5_final(fmd));
 	}
 	else if (flg->r)
 	{
 		put_hash(md5_final(fmd));
-		ft_printf(" \"%s\"", arg);
+		if (flg->fd)
+			ft_printf(" %s", flg->fdname);
+		else
+			ft_printf(" \"%s\"", arg);
 	}
 	else if (flg->q)
 		put_hash(md5_final(fmd));
@@ -57,7 +60,10 @@ void		put_sha(t_flg *flg, t_fsha *fsh, char *arg)
 	else if (flg->r)
 	{
 		put_hash_sha(flg, fsh);
-		ft_printf(" \"%s\"", arg);
+		if (flg->fd)
+			ft_printf(" %s", flg->fdname);
+		else
+			ft_printf(" \"%s\"", arg);
 	}
 	else if (flg->q)
 		put_hash_sha(flg, fsh);

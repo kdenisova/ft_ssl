@@ -12,25 +12,31 @@
 
 #include "ft_ssl.h"
 
-void	flag_init(t_flg *flg, char *arg)
+void	flag_init(t_flg *flg, char **arg, int argv)
 {
+	int i;
+
+	i = 2;
 	flg->p = 0;
 	flg->q = 0;
 	flg->r = 0;
 	flg->s = 0;
 	flg->fd = 0;
 	flg->i = 0;
-	if (!ft_strcmp(arg, "-p"))
-		flg->p = 1;
-	else if (!ft_strcmp(arg, "-q"))
-		flg->q = 1;
-	else if (!ft_strcmp(arg, "-r"))
-		flg->r = 1;
-	else if (!ft_strcmp(arg, "-s"))
-		flg->s = 1;
-	else
+	while (i < argv)
+	{
+		if (arg[i][0] == '-')
+		{
+			parse_flag(flg, arg[i]);
+			i++;
+		}
+		else
+			break;
+	}
+	flg->i = i;
+	if (!flg->p && !flg->s)
 		flg->fd = 1;
-	
+	//printf("p = %d, q = %d, r = %d, s = %d, i = %d\n", flg->p, flg->q, flg->r, flg->s, flg->i);
 	// else
 	// {
 	// 	ft_putstr("usage: md5 [-pqr] [-s string] [files ...]\n");
@@ -65,20 +71,33 @@ void	parse_alg(t_flg *flg, char *arg)
 		flg->alg = "sha512";
 	else
 	{
-		ft_putstr("Error. Invalid hash function. Use md5, sha256 or sha512\n");
+		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", arg);
+		ft_putstr("Standard commands:\n\nMessage Digest commands:\n");
+		ft_putstr("md5\nsha256\nsha512\n\n");
+		ft_putstr("Cipher commands:\n");
 		exit(1);
 	}
 }
 
 void	parse_flag(t_flg *flg, char *arg)
 {
-	if (!flg->q && !flg->r && !flg->p)
-		flg->i = 2;
-	else if ((flg->q || flg->r) && !ft_strcmp(arg, "-s"))
-	{
+	if (!ft_strcmp(arg, "-p"))
+		flg->p = 1;
+	else if (!ft_strcmp(arg, "-q"))
+		flg->q = 1;
+	else if (!ft_strcmp(arg, "-r"))
+		flg->r = 1;
+	else if (!ft_strcmp(arg, "-s"))
 		flg->s = 1;
-		flg->i = 4;
-	}
 	else
-		flg->i = 3;
+		flg->fd = 1;
+	// if (!flg->q && !flg->r && !flg->p)
+	// 	flg->i = 2;
+	// else if ((flg->q || flg->r) && !ft_strcmp(arg, "-s"))
+	// {
+	// 	flg->s = 1;
+	// 	flg->i = 4;
+	// }
+	// else
+	// 	flg->i = 3;
 }

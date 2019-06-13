@@ -18,15 +18,20 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 	char	*str;
 	int		fd;
 	int		len;
+	struct	stat statbuf;
+
 
 	len = 0;
 	fd = open(arg, O_RDONLY);
+	fstat(fd, &statbuf);
+	if (S_ISDIR(statbuf.st_mode))
+	{
+		ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
+		exit(1);
+	}
 	if (fd < 0)
 	{
-		if (errno == 21)
-			ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
-		else
-			ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
+		ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
 		exit(1);
 	}
 	else
@@ -60,14 +65,14 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		ft_putstr("usage: ./ft_ssl [hash_function] [-pqr] [-s string] [files ...]\n");
+		ft_putstr("usage: ft_ssl command [command opts] [command args]\n");
 		exit(1);
 	}
 	else
 	{
 		parse_alg(&flg, argv[1]);
-		flag_init(&flg, argv[2]);
-		parse_flag(&flg, argv[3]);
+		flag_init(&flg, argv, argc);
+		//parse_flag(&flg, argv[3]);
 		alphabet_init(&al);
 		if (flg.s && argv[flg.i])
 		{
