@@ -79,6 +79,7 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 		ft_md5(flg, al, str, len);
 	else
 		ft_sha(flg, al, str, len);
+	flg->in = 0;
 }
 
 int	main(int argc, char **argv)
@@ -96,12 +97,16 @@ int	main(int argc, char **argv)
 		parse_alg(&flg, argv[1]);
 		flag_init(&flg, argv, argc);
 		alphabet_init(&al);
+		if (flg.p || argc == 2)
+			parse_stdin(&flg, &al);
 		if (flg.s && argv[flg.i])
 		{
 			if (!ft_strcmp(flg.alg, "md5"))
 				ft_md5(&flg, &al, argv[flg.i], 0);
 			else
 				ft_sha(&flg, &al, argv[flg.i], 0);
+			flg.s = 0;
+			flg.i++;
 		}
 		else if (flg.s && !argv[flg.i])
 		{
@@ -110,16 +115,14 @@ int	main(int argc, char **argv)
 			ft_printf("[-s string] [files ...]\n");
 			exit(1);
 		}
-		else if (flg.fd)
+		if (flg.fd)
 			parse_file(&flg, &al, argv[flg.i]);
-		else if (flg.p || argc == 2 || (!flg.fd && !flg.s))
-			parse_stdin(&flg, &al);
-		else
-		{
-			ft_printf("usage: ./ft_ssl [hash_function] ");
-			ft_printf("[-pqr] [-s string] [files ...]\n");
-			exit(1);
-		}
+		// else
+		// {
+		// 	ft_printf("usage: ./ft_ssl [hash_function] ");
+		// 	ft_printf("[-pqr] [-s string] [files ...]\n");
+		// 	exit(1);
+		// }
 	}
 	//while (1);
 	return (0);
