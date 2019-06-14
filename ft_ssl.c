@@ -12,13 +12,12 @@
 
 #include "ft_ssl.h"
 
-int	parse_file(t_flg *flg, t_alp *al, char *arg)
+int	parse_file(t_flg *flg, t_alp *al, char *arg, int fd)
 {
-	char	*line;
-	char	*str;
-	int		fd;
-	int		len;
-	struct	stat statbuf;
+	struct stat	statbuf;
+	char		*line;
+	char		*str;
+	int			len;
 
 	len = 0;
 	fd = open(arg, O_RDONLY);
@@ -26,12 +25,12 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 	if (S_ISDIR(statbuf.st_mode))
 	{
 		ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
-		exit(1);
+		return (1);
 	}
 	if (fd < 0)
 	{
 		ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
-		exit(1);
+		return (1);
 	}
 	else
 	{
@@ -42,12 +41,8 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg)
 		{
 			line[len] = '\0';
 			str = ft_strjoin(str, line);
-			ft_strdel(&line);
-			if (len == BLOCK_SIZE)
-				line = ft_strnew(BLOCK_SIZE);
 		}
-		if (line)
-			ft_strdel(&line);
+		ft_strdel(&line);
 		close(fd);
 		if (!ft_strcmp(flg->alg, "md5"))
 			ft_md5(flg, al, str, len);
@@ -86,7 +81,9 @@ int	main(int argc, char **argv)
 {
 	t_flg	flg;
 	t_alp	al;
+	int		fd;
 
+	fd = 0;
 	if (argc < 2)
 	{
 		ft_putstr("usage: ft_ssl command [command opts] [command args]\n");
@@ -116,13 +113,13 @@ int	main(int argc, char **argv)
 			exit(1);
 		}
 		if (flg.fd)
-			parse_file(&flg, &al, argv[flg.i]);
-		// else
-		// {
-		// 	ft_printf("usage: ./ft_ssl [hash_function] ");
-		// 	ft_printf("[-pqr] [-s string] [files ...]\n");
-		// 	exit(1);
-		// }
+		{
+			while (flg.i < argc)
+			{
+				parse_file(&flg, &al, argv[flg.i], fd);
+				flg.i++;
+			}
+		}
 	}
 	//while (1);
 	return (0);

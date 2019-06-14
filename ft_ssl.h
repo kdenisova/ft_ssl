@@ -65,7 +65,7 @@ typedef struct		s_fsha
 	int				round;
 }					t_fsha;
 
-int					parse_file(t_flg *flg, t_alp *al, char *arg);
+int					parse_file(t_flg *flg, t_alp *al, char *arg, int fd);
 void				parse_stdin(t_flg *flg, t_alp *al);
 void				flag_init(t_flg *flg, char **arg, int argv);
 void				parse_flag(t_flg *flg, char *arg);
