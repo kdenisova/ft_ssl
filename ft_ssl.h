@@ -19,6 +19,12 @@
 # include "ft_printf/ft_printf.h"
 # define BLOCK_SIZE 64
 # define SIZE_SHA 128
+# define NBR_CMD 3
+
+// typedef struct		s_dispatch
+// {
+// 	const char *command[NBR_CMD]; //= {"md5", "sha256", "sha512"};
+// }					t_dispatch;
 
 typedef struct		s_flg
 {
