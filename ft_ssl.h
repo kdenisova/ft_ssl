@@ -21,11 +21,6 @@
 # define SIZE_SHA 128
 # define NBR_CMD 3
 
-// typedef struct		s_dispatch
-// {
-// 	const char *command[NBR_CMD]; //= {"md5", "sha256", "sha512"};
-// }					t_dispatch;
-
 typedef struct		s_flg
 {
 	int				p;
@@ -35,8 +30,10 @@ typedef struct		s_flg
 	int				i;
 	int				fd;
 	int				in;
+	int				index;
 	char			*fdname;
 	char			*alg;
+
 }					t_flg;
 
 typedef struct		s_alp
@@ -75,7 +72,7 @@ int					parse_file(t_flg *flg, t_alp *al, char *arg, int fd);
 void				parse_stdin(t_flg *flg, t_alp *al);
 void				flag_init(t_flg *flg, char **arg, int argv);
 void				parse_flag(t_flg *flg, char *arg);
-void				parse_alg(t_flg *flg, char *arg);
+int					parse_alg(t_flg *flg, char *arg);
 void				alphabet_init(t_alp *al);
 void				ft_md5(t_flg *flg, t_alp *al, char *arg, int len);
 void				ft_sha(t_flg *flg, t_alp *al, char *arg, int len);
@@ -112,5 +109,10 @@ void				ft_sha256(t_fsha *fsh, t_alp *al, char *arg);
 void				ft_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void				put_sha(t_flg *flg, t_fsha *fsh, char *arg);
 void				put_hash_sha(t_flg *flg, t_fsha *fsh);
+
+typedef void		(*t_dispatcher)(t_flg *, t_alp *, char *, int);
+
+static char			*g_name[NBR_CMD] = {"md5", "sha256", "sha512"};
+static t_dispatcher	g_disp[NBR_CMD] = {ft_md5, ft_sha};
 
 #endif

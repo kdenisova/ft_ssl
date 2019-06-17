@@ -64,14 +64,30 @@ void	alphabet_init(t_alp *al)
 	al->h = 0;
 }
 
-void	parse_alg(t_flg *flg, char *arg)
+char	*ft_strtolower(char *str)
 {
-	if (!ft_strcmp(arg, "md5") || !ft_strcmp(arg, "MD5"))
-		flg->alg = "md5";
-	else if (!ft_strcmp(arg, "sha256") || !ft_strcmp(arg, "SHA256"))
-		flg->alg = "sha256";
-	else if (!ft_strcmp(arg, "sha512") || !ft_strcmp(arg, "SHA512"))
-		flg->alg = "sha512";
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		str[i] = ft_tolower(str[i]);
+		i++;
+	}
+	return (str);
+}
+
+int	parse_alg(t_flg *flg, char *arg)
+{
+	char *alg;
+
+	flg->index = 0;
+	alg = ft_strdup(arg);
+	ft_strtolower(alg);
+	while (flg->index < NBR_CMD && ft_strcmp(g_name[flg->index], alg))
+		flg->index++;
+	if (flg->index != NBR_CMD)
+		flg->alg = ft_strdup(alg);
 	else
 	{
 		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", arg);
@@ -80,6 +96,8 @@ void	parse_alg(t_flg *flg, char *arg)
 		ft_putstr("Cipher commands:\n");
 		exit(1);
 	}
+	free(alg);
+	return (flg->index);
 }
 
 void	parse_flag(t_flg *flg, char *arg)
