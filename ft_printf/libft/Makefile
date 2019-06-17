@@ -81,6 +81,7 @@ SRC =		ft_memset.c \
 			ft_itoa_base.c \
 			ft_itoa_un.c \
 			ft_strtoupper.c \
+			ft_strtolower.c \
 			ft_putbits.c \
 			ft_putnbrlg.c \
 			ft_isnegative.c \
@@ -154,6 +155,7 @@ OBJECTS =	ft_memset.o \
 			ft_itoa_base.o \
 			ft_itoa_un.o \
 			ft_strtoupper.o \
+			ft_strtolower.o \
 			ft_putbits.o \
 			ft_putnbrlg.o \
 			ft_isnegative.o \

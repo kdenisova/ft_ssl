@@ -12,11 +12,32 @@
 
 #include "ft_ssl.h"
 
+void	parse_flag(t_flg *flg, char *arg)
+{
+	if (!ft_strcmp(arg, "-p"))
+		flg->p = 1;
+	else if (!ft_strcmp(arg, "-q"))
+		flg->q = 1;
+	else if (!ft_strcmp(arg, "-r"))
+		flg->r = 1;
+	else if (!ft_strcmp(arg, "-s"))
+		flg->s = 1;
+	else if (!ft_strncmp(arg, "-", 1) && arg[1])
+	{
+		ft_printf("%s: illegal option -- %c\n", flg->alg, arg[1]);
+		ft_printf("usage: ft_ssl ");
+		ft_printf("%s [-pqr] [-s string] [files ...]\n", flg->alg);
+		exit(1);
+	}
+	else
+		flg->fd = 1;
+}
+
 void	flag_init(t_flg *flg, char **arg, int argv)
 {
 	int i;
 
-	i = 2;
+	i = 1;
 	flg->p = 0;
 	flg->q = 0;
 	flg->r = 0;
@@ -24,32 +45,19 @@ void	flag_init(t_flg *flg, char **arg, int argv)
 	flg->i = 0;
 	flg->fd = 0;
 	flg->in = 0;
-	while (i < argv)
+	while (++i < argv)
 	{
 		if (arg[i][0] == '-')
-		{
 			parse_flag(flg, arg[i]);
-			i++;
-		}
 		else
-			break;
+			break ;
 	}
 	flg->i = i;
-	if ((!flg->p && !flg->s && arg[i]) || (flg->p && !flg->s && arg[i]) || (i != argv - 1))
+	if ((!flg->p && !flg->s && arg[i]) || (flg->p && !flg->s && arg[i])
+		|| (i != argv - 1))
 		flg->fd = 1;
 	if (flg->r && flg->q)
 		flg->r = 0;
-	//printf("p = %d, q = %d, r = %d, s = %d, i = %d\n", flg->p, flg->q, flg->r, flg->s, flg->i);
-	// else
-	// {
-	// 	ft_putstr("usage: md5 [-pqr] [-s string] [files ...]\n");
-	// 	// ft_putstr("\t-p: echo STDIN to STDOUT and append the checksum ");
-	// 	// ft_putstr("to STDOUT\n");
-	// 	// ft_putstr("\t-q: quiet mode\n");
-	// 	// ft_putstr("\t-r: reverse the format of the output\n");
-	// 	// ft_putstr("\t-s: print the sum of the given string\n");
-	// 	exit(1);
-	// }
 }
 
 void	alphabet_init(t_alp *al)
@@ -64,20 +72,7 @@ void	alphabet_init(t_alp *al)
 	al->h = 0;
 }
 
-char	*ft_strtolower(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		str[i] = ft_tolower(str[i]);
-		i++;
-	}
-	return (str);
-}
-
-int	parse_alg(t_flg *flg, char *arg)
+int		parse_alg(t_flg *flg, char *arg)
 {
 	char *alg;
 
@@ -98,18 +93,4 @@ int	parse_alg(t_flg *flg, char *arg)
 	}
 	free(alg);
 	return (flg->index);
-}
-
-void	parse_flag(t_flg *flg, char *arg)
-{
-	if (!ft_strcmp(arg, "-p"))
-		flg->p = 1;
-	else if (!ft_strcmp(arg, "-q"))
-		flg->q = 1;
-	else if (!ft_strcmp(arg, "-r"))
-		flg->r = 1;
-	else if (!ft_strcmp(arg, "-s"))
-		flg->s = 1;
-	else
-		flg->fd = 1;
 }

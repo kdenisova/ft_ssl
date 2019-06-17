@@ -84,6 +84,7 @@ int					ft_is_prime(int nb);
 char				*ft_itoa_base(long n, int base);
 char				*ft_itoa_un(unsigned long long int nbr, int base);
 char				*ft_strtoupper(char *str);
+char				*ft_strtolower(char *str);
 int					ft_putbits(unsigned char octet);
 void				ft_putnbrlg(long long int n);
 int					ft_isnegative(long nbr);

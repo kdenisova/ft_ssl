@@ -73,6 +73,7 @@ void				parse_stdin(t_flg *flg, t_alp *al);
 void				flag_init(t_flg *flg, char **arg, int argv);
 void				parse_flag(t_flg *flg, char *arg);
 int					parse_alg(t_flg *flg, char *arg);
+int					check_error(t_flg *flg, char *arg, int fd);
 void				alphabet_init(t_alp *al);
 void				ft_md5(t_flg *flg, t_alp *al, char *arg, int len);
 unsigned			fun_f(unsigned x, unsigned y, unsigned z);
@@ -108,6 +109,7 @@ char				*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void				ft_sha256(t_flg *flg, t_alp *al, char *arg, int len);
 void				ft_sha512(t_flg *flg, t_alp *al, char *arg, int len);
 void				put_sha(t_flg *flg, t_fsha *fsh, char *arg);
+void				put_sha_s(t_flg *flg, t_fsha *fsh, char *arg);
 void				put_hash_sha(t_flg *flg, t_fsha *fsh);
 
 typedef void		(*t_dispatcher)(t_flg *, t_alp *, char *, int);

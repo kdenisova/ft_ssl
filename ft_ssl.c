@@ -12,26 +12,31 @@
 
 #include "ft_ssl.h"
 
-int	parse_file(t_flg *flg, t_alp *al, char *arg, int fd)
+int		check_error(t_flg *flg, char *arg, int fd)
 {
 	struct stat	statbuf;
+
+	fstat(fd, &statbuf);
+	if (S_ISDIR(statbuf.st_mode))
+	{
+		ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
+		return (-1);
+	}
+	if (fd < 0)
+		ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
+	return (fd);
+}
+
+int		parse_file(t_flg *flg, t_alp *al, char *arg, int fd)
+{
 	char		*line;
 	char		*str;
 	int			len;
 
 	len = 0;
 	fd = open(arg, O_RDONLY);
-	fstat(fd, &statbuf);
-	if (S_ISDIR(statbuf.st_mode))
-	{
-		ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
+	if (check_error(flg, arg, fd) < 0)
 		return (1);
-	}
-	if (fd < 0)
-	{
-		ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
-		return (1);
-	}
 	else
 	{
 		flg->fdname = arg;
@@ -71,7 +76,7 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 	flg->in = 0;
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_flg	flg;
 	t_alp	al;

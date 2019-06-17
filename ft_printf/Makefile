@@ -75,6 +75,7 @@ LIBFT = libft/ft_memset.c \
 			libft/ft_itoa_base.c \
 			libft/ft_itoa_un.c \
 			libft/ft_strtoupper.c \
+			libft/ft_strtolower.c \
 			libft/ft_putbits.c \
 			libft/ft_putnbrlg.c \
 			libft/ft_isnegative.c \

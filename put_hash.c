@@ -12,6 +12,18 @@
 
 #include "ft_ssl.h"
 
+void	put_hash(unsigned *hash)
+{
+	int			i;
+
+	i = 0;
+	while (i < 16)
+	{
+		ft_printf("%02x", hash[i]);
+		i++;
+	}
+}
+
 void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 {
 	if (flg->in)
@@ -41,51 +53,6 @@ void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 	ft_putchar('\n');
 }
 
-void	put_hash(unsigned *hash)
-{
-	int			i;
-
-	i = 0;
-	while (i < 16)
-	{
-		ft_printf("%02x", hash[i]);
-		i++;
-	}
-}
-
-void	put_sha(t_flg *flg, t_fsha *fsh, char *arg)
-{
-	char *alg;
-
-	alg = ft_strdup(flg->alg);
-	if (flg->in)
-	{
-		if (flg->p)
-			ft_printf("%s", arg);
-		put_hash_sha(flg, fsh);
-	}
-	else if (flg->q == 0 && flg->r == 0)
-	{
-		if (flg->s)
-			ft_printf("%s(\"%s\")= ", ft_strtoupper(alg), arg);
-		else
-			ft_printf("%s(%s)= ", ft_strtoupper(alg), flg->fdname);
-		put_hash_sha(flg, fsh);
-	}
-	else if (flg->r)
-	{
-		put_hash_sha(flg, fsh);
-		if (flg->s)
-			ft_printf(" \"%s\"", arg);
-		else
-			ft_printf(" %s", flg->fdname);
-	}
-	else if (flg->q)
-		put_hash_sha(flg, fsh);
-	ft_putchar('\n');
-	free(alg);
-}
-
 void	put_hash_sha(t_flg *flg, t_fsha *fsh)
 {
 	int i;
@@ -107,4 +74,40 @@ void	put_hash_sha(t_flg *flg, t_fsha *fsh)
 			i++;
 		}
 	}
+}
+
+void	put_sha_s(t_flg *flg, t_fsha *fsh, char *arg)
+{
+	char *alg;
+
+	alg = ft_strdup(flg->alg);
+	if (flg->s)
+		ft_printf("%s(\"%s\")= ", ft_strtoupper(alg), arg);
+	else
+		ft_printf("%s(%s)= ", ft_strtoupper(alg), flg->fdname);
+	put_hash_sha(flg, fsh);
+	free(alg);
+}
+
+void	put_sha(t_flg *flg, t_fsha *fsh, char *arg)
+{
+	if (flg->in)
+	{
+		if (flg->p)
+			ft_printf("%s", arg);
+		put_hash_sha(flg, fsh);
+	}
+	else if (flg->q == 0 && flg->r == 0)
+		put_sha_s(flg, fsh, arg);
+	else if (flg->r)
+	{
+		put_hash_sha(flg, fsh);
+		if (flg->s)
+			ft_printf(" \"%s\"", arg);
+		else
+			ft_printf(" %s", flg->fdname);
+	}
+	else if (flg->q)
+		put_hash_sha(flg, fsh);
+	ft_putchar('\n');
 }

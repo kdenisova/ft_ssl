@@ -48,7 +48,6 @@ void	sha512_init(t_fsha *fsh, char *arg, int len)
 	fsh->bitlen = fsh->len * 8;
 }
 
-
 void	ft_sha256(t_flg *flg, t_alp *al, char *arg, int len)
 {
 	t_fsha		fsh;
