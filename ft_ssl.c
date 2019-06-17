@@ -44,10 +44,7 @@ int	parse_file(t_flg *flg, t_alp *al, char *arg, int fd)
 		}
 		ft_strdel(&line);
 		close(fd);
-		if (!ft_strcmp(flg->alg, "md5"))
-			ft_md5(flg, al, str, len);
-		else
-			ft_sha(flg, al, str, len);
+		g_disp[flg->index](flg, al, str, len);
 	}
 	return (0);
 }
@@ -70,10 +67,7 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 		len = read(0, line, BLOCK_SIZE);
 	}
 	ft_strdel(&line);
-	if (!ft_strcmp(flg->alg, "md5"))
-		ft_md5(flg, al, str, len);
-	else
-		ft_sha(flg, al, str, len);
+	g_disp[flg->index](flg, al, str, len);
 	flg->in = 0;
 }
 
@@ -82,9 +76,7 @@ int	main(int argc, char **argv)
 	t_flg	flg;
 	t_alp	al;
 	int		fd;
-	//const t_dispatcher disp[NBR_CMD] = {ft_md5, ft_sha};
 
-	//disp[1](&flg, &al, argv[3], 0);
 	fd = 0;
 	if (argc < 2)
 	{
@@ -100,12 +92,7 @@ int	main(int argc, char **argv)
 			parse_stdin(&flg, &al);
 		if (flg.s && argv[flg.i])
 		{
-			//if (!ft_strcmp(flg.alg, "md5"))
-				g_disp[flg.index](&flg, &al, argv[flg.i], 0);
-				//ft_md5(&flg, &al, argv[flg.i], 0);
-			// else
-			// 	g_disp[1](&flg, &al, argv[flg.i], 0);
-				//ft_sha(&flg, &al, argv[flg.i], 0);
+			g_disp[flg.index](&flg, &al, argv[flg.i], 0);
 			flg.s = 0;
 			flg.i++;
 		}

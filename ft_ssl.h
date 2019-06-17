@@ -75,7 +75,6 @@ void				parse_flag(t_flg *flg, char *arg);
 int					parse_alg(t_flg *flg, char *arg);
 void				alphabet_init(t_alp *al);
 void				ft_md5(t_flg *flg, t_alp *al, char *arg, int len);
-void				ft_sha(t_flg *flg, t_alp *al, char *arg, int len);
 unsigned			fun_f(unsigned x, unsigned y, unsigned z);
 unsigned			fun_g(unsigned x, unsigned y, unsigned z);
 unsigned			fun_h(unsigned x, unsigned y, unsigned z);
@@ -95,7 +94,8 @@ void				stage_four(t_fmd5 *fmd, t_alp *a, unsigned *x);
 unsigned			*md5_final(t_fmd5 *fmd);
 void				put_md5(t_flg *flg, t_fmd5 *fmd, char *arg);
 void				put_hash(unsigned *hash);
-void				sha_init(t_fsha *fsh, t_flg *flg);
+void				sha256_init(t_fsha *fsh, char *arg, int len);
+void				sha512_init(t_fsha *fsh, char *arg, int len);
 unsigned			*sha_update(t_fsha *fsh, unsigned int *w);
 unsigned long		*sha512_update(t_fsha *fsh, unsigned long *w);
 void				sha_stages(t_fsha *fsh, t_alp *al, unsigned *w);
@@ -105,14 +105,14 @@ void				sha512_rounds(t_fsha *fsh, t_alp *al, unsigned long *w);
 unsigned long		*sha_padding(t_fsha *fsh, unsigned long *w);
 char				*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg);
 char				*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg);
-void				ft_sha256(t_fsha *fsh, t_alp *al, char *arg);
-void				ft_sha512(t_fsha *fsh, t_alp *al, char *arg);
+void				ft_sha256(t_flg *flg, t_alp *al, char *arg, int len);
+void				ft_sha512(t_flg *flg, t_alp *al, char *arg, int len);
 void				put_sha(t_flg *flg, t_fsha *fsh, char *arg);
 void				put_hash_sha(t_flg *flg, t_fsha *fsh);
 
 typedef void		(*t_dispatcher)(t_flg *, t_alp *, char *, int);
 
 static char			*g_name[NBR_CMD] = {"md5", "sha256", "sha512"};
-static t_dispatcher	g_disp[NBR_CMD] = {ft_md5, ft_sha};
+static t_dispatcher	g_disp[NBR_CMD] = {ft_md5, ft_sha256, ft_sha512};
 
 #endif
