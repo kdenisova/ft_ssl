@@ -60,7 +60,7 @@ void	put_hash_sha(t_flg *flg, t_fsha *fsh)
 	i = 0;
 	if (!ft_strcmp(flg->alg, "sha256"))
 	{
-		while (i < 8)
+		while (i < fsh->hash_len)
 		{
 			ft_printf("%08x", fsh->hash[i]);
 			i++;
@@ -68,7 +68,7 @@ void	put_hash_sha(t_flg *flg, t_fsha *fsh)
 	}
 	else
 	{
-		while (i < 8)
+		while (i < fsh->hash_len)
 		{
 			ft_printf("%016lx", fsh->hash[i]);
 			i++;

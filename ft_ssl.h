@@ -19,7 +19,7 @@
 # include "ft_printf/ft_printf.h"
 # define BLOCK_SIZE 64
 # define SIZE_SHA 128
-# define NBR_CMD 3
+# define NBR_CMD 4
 
 typedef struct		s_flg
 {
@@ -64,6 +64,7 @@ typedef struct		s_fsha
 	unsigned long	tmp1;
 	unsigned long	tmp2;
 	int				len;
+	int				hash_len;
 	__uint128_t		bitlen;
 	int				round;
 }					t_fsha;
@@ -97,6 +98,7 @@ unsigned			*md5_final(t_fmd5 *fmd);
 void				put_md5(t_flg *flg, t_fmd5 *fmd, char *arg);
 void				put_hash(unsigned *hash);
 void				sha256_init(t_fsha *fsh, char *arg, int len);
+void				sha384_init(t_fsha *fsh, char *arg, int len);
 void				sha512_init(t_fsha *fsh, char *arg, int len);
 unsigned			*sha_update(t_fsha *fsh, unsigned int *w);
 unsigned long		*sha512_update(t_fsha *fsh, unsigned long *w);
@@ -108,6 +110,7 @@ unsigned long		*sha_padding(t_fsha *fsh, unsigned long *w);
 char				*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg);
 char				*get_block_sha512(t_fsha *fsh, t_alp *al, char *arg);
 void				ft_sha256(t_flg *flg, t_alp *al, char *arg, int len);
+void				ft_sha384(t_flg *flg, t_alp *al, char *arg, int len);
 void				ft_sha512(t_flg *flg, t_alp *al, char *arg, int len);
 void				put_sha(t_flg *flg, t_fsha *fsh, char *arg);
 void				put_sha_s(t_flg *flg, t_fsha *fsh, char *arg);
@@ -115,7 +118,7 @@ void				put_hash_sha(t_flg *flg, t_fsha *fsh);
 
 typedef void		(*t_dispatcher)(t_flg *, t_alp *, char *, int);
 
-static char			*g_name[NBR_CMD] = {"md5", "sha256", "sha512"};
-static t_dispatcher	g_disp[NBR_CMD] = {ft_md5, ft_sha256, ft_sha512};
+static char			*g_name[NBR_CMD] = {"md5", "sha256", "sha512", "sha384"};
+static t_dispatcher	g_disp[NBR_CMD] = {ft_md5, ft_sha256, ft_sha512, ft_sha384};
 
 #endif
