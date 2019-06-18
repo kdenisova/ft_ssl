@@ -27,11 +27,12 @@ int		check_error(t_flg *flg, char *arg, int fd)
 	return (fd);
 }
 
-int		parse_file(t_flg *flg, t_alp *al, char *arg, int fd)
+int		parse_file(t_flg *flg, t_alp *al, char *arg)
 {
 	char		*line;
 	char		*str;
 	int			len;
+	int			fd;
 
 	len = 0;
 	fd = open(arg, O_RDONLY);
@@ -76,13 +77,27 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 	flg->in = 0;
 }
 
+void	parse_str(t_flg *flg, t_alp *al, char **argv)
+{
+	if (argv[flg->i])
+	{
+		g_disp[flg->index](flg, al, argv[flg->i], 0);
+		flg->s = 0;
+		flg->i++;
+	}
+	else
+	{
+		ft_printf("%s: option requires an argument -- s\n", flg->alg);
+		ft_printf("usage: ./ft_ssl command [-pqr] [-s string] [files ...]\n");
+		exit(1);
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	t_flg	flg;
 	t_alp	al;
-	int		fd;
 
-	fd = 0;
 	if (argc < 2)
 	{
 		ft_putstr("usage: ft_ssl command [command opts] [command args]\n");
@@ -90,29 +105,16 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
-		parse_alg(&flg, argv[1]);
-		flag_init(&flg, argv, argc);
-		alphabet_init(&al);
+		parse_alg(&flg, &al, argc, argv);
 		if (flg.p || argc == 2)
 			parse_stdin(&flg, &al);
-		if (flg.s && argv[flg.i])
-		{
-			g_disp[flg.index](&flg, &al, argv[flg.i], 0);
-			flg.s = 0;
-			flg.i++;
-		}
-		else if (flg.s && !argv[flg.i])
-		{
-			ft_printf("%s: option requires an argument -- s\n", flg.alg);
-			ft_printf("usage: ./ft_ssl [hash_function] [-pqr] ");
-			ft_printf("[-s string] [files ...]\n");
-			exit(1);
-		}
+		if (flg.s)
+			parse_str(&flg, &al, argv);
 		if (flg.fd)
 		{
 			while (flg.i < argc)
 			{
-				parse_file(&flg, &al, argv[flg.i], fd);
+				parse_file(&flg, &al, argv[flg.i]);
 				flg.i++;
 			}
 		}

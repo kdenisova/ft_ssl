@@ -72,12 +72,12 @@ void	alphabet_init(t_alp *al)
 	al->h = 0;
 }
 
-int		parse_alg(t_flg *flg, char *arg)
+void	parse_alg(t_flg *flg, t_alp *al, int argc, char **argv)
 {
 	char *alg;
 
 	flg->index = 0;
-	alg = ft_strdup(arg);
+	alg = ft_strdup(argv[1]);
 	ft_strtolower(alg);
 	while (flg->index < NBR_CMD && ft_strcmp(g_name[flg->index], alg))
 		flg->index++;
@@ -85,12 +85,13 @@ int		parse_alg(t_flg *flg, char *arg)
 		flg->alg = ft_strdup(alg);
 	else
 	{
-		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", arg);
+		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", argv[1]);
 		ft_putstr("Standard commands:\n\nMessage Digest commands:\n");
 		ft_putstr("md5\nsha256\nsha512\n\n");
 		ft_putstr("Cipher commands:\n");
 		exit(1);
 	}
 	free(alg);
-	return (flg->index);
+	flag_init(flg, argv, argc);
+	alphabet_init(al);
 }

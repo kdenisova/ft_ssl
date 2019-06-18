@@ -68,11 +68,12 @@ typedef struct		s_fsha
 	int				round;
 }					t_fsha;
 
-int					parse_file(t_flg *flg, t_alp *al, char *arg, int fd);
+int					parse_file(t_flg *flg, t_alp *al, char *arg);
 void				parse_stdin(t_flg *flg, t_alp *al);
+void				parse_str(t_flg *flg, t_alp *al, char **argv);
 void				flag_init(t_flg *flg, char **arg, int argv);
 void				parse_flag(t_flg *flg, char *arg);
-int					parse_alg(t_flg *flg, char *arg);
+void				parse_alg(t_flg *flg, t_alp *al, int argc, char **argv);
 int					check_error(t_flg *flg, char *arg, int fd);
 void				alphabet_init(t_alp *al);
 void				ft_md5(t_flg *flg, t_alp *al, char *arg, int len);
