@@ -57,7 +57,7 @@ static int	read_file(const int fd, char **line, char **stack)
 	return (check_endln(stack, line, fd));
 }
 
-int	get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	static char *stack[FD_MAX];
 

@@ -119,6 +119,6 @@ int		main(int argc, char **argv)
 			}
 		}
 	}
-	//while (1);
+	//system("leaks ft_ssl");
 	return (0);
 }
