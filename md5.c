@@ -76,10 +76,10 @@ unsigned		*md5_final(t_fmd5 *fmd)
 	hash = ft_memalloc(sizeof(unsigned int) * 16);
 	while (i < 16)
 	{
-		hash[i] = (unsigned char)((fmd->hash[j]) & 0xFF);
-		hash[i + 1] = (unsigned char)((fmd->hash[j] >> 8) & 0xFF);
-		hash[i + 2] = (unsigned char)((fmd->hash[j] >> 16) & 0xFF);
-		hash[i + 3] = (unsigned char)((fmd->hash[j] >> 24) & 0xFF);
+		hash[i] = (fmd->hash[j]) & 0xFF;
+		hash[i + 1] = (fmd->hash[j] >> 8) & 0xFF;
+		hash[i + 2] = (fmd->hash[j] >> 16) & 0xFF;
+		hash[i + 3] = (fmd->hash[j] >> 24) & 0xFF;
 		i = i + 4;
 		j++;
 	}
@@ -90,8 +90,10 @@ void			ft_md5(t_flg *flg, t_alp *al, char *arg, int len)
 {
 	t_fmd5		fmd;
 	unsigned	*x;
+	char		*temp;
 
 	md5_init(&fmd, arg, len);
+	temp = ft_strdup(arg);
 	if (fmd.len >= BLOCK_SIZE - 8)
 		arg = get_block_md5(&fmd, al, arg);
 	x = ft_memalloc(sizeof(unsigned int) * 64);
@@ -104,5 +106,5 @@ void			ft_md5(t_flg *flg, t_alp *al, char *arg, int len)
 	md5_update(&fmd, x);
 	stage_one(&fmd, al, x);
 	free(x);
-	put_md5(flg, &fmd, arg);
+	put_md5(flg, &fmd, temp);
 }

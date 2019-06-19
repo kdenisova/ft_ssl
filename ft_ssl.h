@@ -18,7 +18,6 @@
 # include "ft_printf/ft_printf.h"
 # define BLOCK_SIZE 64
 # define SIZE_SHA 128
-# define NBR_CMD 5
 
 typedef struct		s_flg
 {
@@ -121,10 +120,10 @@ void				put_sha_s(t_flg *flg, t_fsha *fsh, char *arg, \
 void				put_hash_sha256(t_fsha *fsh);
 void				put_hash_sha512(t_fsha *fsh);
 
-static char			*g_name[NBR_CMD] =
-{"md5", "sha224", "sha256", "sha384", "sha512"};
+static char			*g_name[] =
+{"md5", "sha224", "sha256", "sha384", "sha512", NULL};
 
-static t_dispatcher	g_disp[NBR_CMD] =
+static t_dispatcher	g_disp[] =
 {ft_md5, ft_sha224, ft_sha256, ft_sha384, ft_sha512};
 
 #endif
