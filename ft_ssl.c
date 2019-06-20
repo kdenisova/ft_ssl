@@ -50,9 +50,9 @@ int		parse_file(t_flg *flg, t_alp *al, char *arg)
 			ft_strdel(&str);
 			str = temp;
 		}
-		ft_strdel(&temp);
 		close(fd);
 		g_disp[flg->index](flg, al, str, len);
+		ft_strdel(&temp);
 	}
 	return (0);
 }
@@ -76,8 +76,8 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 		str = temp;
 		len = read(0, line, BLOCK_SIZE);
 	}
-	ft_strdel(&temp);
 	g_disp[flg->index](flg, al, str, len);
+	ft_strdel(&temp);
 	flg->in = 0;
 }
 
@@ -123,6 +123,6 @@ int		main(int argc, char **argv)
 			}
 		}
 	}
-	system("leaks ft_ssl");
+	//system("leaks ft_ssl");
 	return (0);
 }

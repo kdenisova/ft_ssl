@@ -88,7 +88,6 @@ char				*ft_strtolower(char *str);
 int					ft_putbits(unsigned char octet);
 void				ft_putnbrlg(long long int n);
 int					ft_isnegative(long nbr);
-int					get_next_line(const int fd, char **line);
 
 typedef struct		s_list
 {

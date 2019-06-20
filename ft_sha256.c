@@ -31,7 +31,7 @@ const unsigned	g_k[64] = {
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-unsigned	*sha_update(t_fsha *fsh, unsigned int *w)
+unsigned	*sha256_update(t_fsha *fsh, unsigned int *w)
 {
 	int i;
 
@@ -63,14 +63,14 @@ char		*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg)
 			ft_memset(w, 0, sizeof(w));
 			ft_memcpy(w, arg, fsh->len);
 			((char *)w)[fsh->len] = 0x80;
-			sha_stages(fsh, al, w);
+			sha256_stages(fsh, al, w);
 			arg = arg + fsh->len;
 			fsh->len = -1;
 		}
 		else
 		{
 			ft_memcpy(w, arg, BLOCK_SIZE);
-			sha_stages(fsh, al, w);
+			sha256_stages(fsh, al, w);
 			arg = arg + BLOCK_SIZE;
 			fsh->len = fsh->len - BLOCK_SIZE;
 		}
@@ -79,7 +79,7 @@ char		*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg)
 	return (arg);
 }
 
-void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
+void		sha256_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 {
 	int			i;
 
@@ -104,9 +104,9 @@ void		sha_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 	}
 }
 
-void		sha_stages(t_fsha *fsh, t_alp *al, unsigned *w)
+void		sha256_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 {
-	sha_update(fsh, w);
+	sha256_update(fsh, w);
 	al->a = fsh->hash[0];
 	al->b = fsh->hash[1];
 	al->c = fsh->hash[2];
@@ -115,7 +115,7 @@ void		sha_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 	al->f = fsh->hash[5];
 	al->g = fsh->hash[6];
 	al->h = fsh->hash[7];
-	sha_rounds(fsh, al, w);
+	sha256_rounds(fsh, al, w);
 	fsh->hash[0] += al->a;
 	fsh->hash[1] += al->b;
 	fsh->hash[2] += al->c;

@@ -57,7 +57,7 @@ void	ft_sha224(t_flg *flg, t_alp *al, char *arg, int len)
 	((char *)w)[fsh.round - 3] = (fsh.bitlen & 0x00FF0000) >> 16;
 	((char *)w)[fsh.round - 2] = (fsh.bitlen & 0x0000FF00) >> 8;
 	((char *)w)[fsh.round - 1] = (fsh.bitlen & 0x000000FF);
-	sha_stages(&fsh, al, w);
+	sha256_stages(&fsh, al, w);
 	free(w);
 	put_sha(flg, &fsh, temp, put_hash_sha256);
 }
@@ -83,7 +83,7 @@ void	ft_sha256(t_flg *flg, t_alp *al, char *arg, int len)
 	((char *)w)[fsh.round - 3] = (fsh.bitlen & 0x00FF0000) >> 16;
 	((char *)w)[fsh.round - 2] = (fsh.bitlen & 0x0000FF00) >> 8;
 	((char *)w)[fsh.round - 1] = (fsh.bitlen & 0x000000FF);
-	sha_stages(&fsh, al, w);
+	sha256_stages(&fsh, al, w);
 	free(w);
 	put_sha(flg, &fsh, temp, put_hash_sha256);
 }

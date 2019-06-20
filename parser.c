@@ -90,7 +90,6 @@ void	parse_alg(t_flg *flg, t_alp *al, int argc, char **argv)
 		exit(1);
 	}
 	ft_strdel(&alg);
-	//free(alg);
 	flag_init(flg, argv, argc);
 	alphabet_init(al);
 }
