@@ -12,7 +12,7 @@
 
 #include "ft_ssl.h"
 
-void	sha224_init(t_fsha *fsh, char *arg, int len)
+void	sha224_init(t_fsha *fsh, char *arg)
 {
 	fsh->hash[0] = 0xc1059ed8;
 	fsh->hash[1] = 0x367cd507;
@@ -24,14 +24,11 @@ void	sha224_init(t_fsha *fsh, char *arg, int len)
 	fsh->hash[7] = 0xbefa4fa4;
 	fsh->round = 64;
 	fsh->hash_len = 7;
-	if (len)
-		fsh->len = len;
-	else
-		fsh->len = ft_strlen(arg);
+	fsh->len = ft_strlen(arg);
 	fsh->bitlen = fsh->len * 8;
 }
 
-void	sha256_init(t_fsha *fsh, char *arg, int len)
+void	sha256_init(t_fsha *fsh, char *arg)
 {
 	fsh->hash[0] = 0x6a09e667;
 	fsh->hash[1] = 0xbb67ae85;
@@ -43,14 +40,11 @@ void	sha256_init(t_fsha *fsh, char *arg, int len)
 	fsh->hash[7] = 0x5be0cd19;
 	fsh->round = 64;
 	fsh->hash_len = 8;
-	if (len)
-		fsh->len = len;
-	else
-		fsh->len = ft_strlen(arg);
+	fsh->len = ft_strlen(arg);
 	fsh->bitlen = fsh->len * 8;
 }
 
-void	sha384_init(t_fsha *fsh, char *arg, int len)
+void	sha384_init(t_fsha *fsh, char *arg)
 {
 	fsh->hash[0] = 0xcbbb9d5dc1059ed8;
 	fsh->hash[1] = 0x629a292a367cd507;
@@ -62,14 +56,11 @@ void	sha384_init(t_fsha *fsh, char *arg, int len)
 	fsh->hash[7] = 0x47b5481dbefa4fa4;
 	fsh->round = 80;
 	fsh->hash_len = 6;
-	if (len)
-		fsh->len = len;
-	else
-		fsh->len = ft_strlen(arg);
+	fsh->len = ft_strlen(arg);
 	fsh->bitlen = fsh->len * 8;
 }
 
-void	sha512_init(t_fsha *fsh, char *arg, int len)
+void	sha512_init(t_fsha *fsh, char *arg)
 {
 	fsh->hash[0] = 0x6a09e667f3bcc908;
 	fsh->hash[1] = 0xbb67ae8584caa73b;
@@ -81,9 +72,6 @@ void	sha512_init(t_fsha *fsh, char *arg, int len)
 	fsh->hash[7] = 0x5be0cd19137e2179;
 	fsh->round = 80;
 	fsh->hash_len = 8;
-	if (len)
-		fsh->len = len;
-	else
-		fsh->len = ft_strlen(arg);
+	fsh->len = ft_strlen(arg);
 	fsh->bitlen = fsh->len * 8;
 }

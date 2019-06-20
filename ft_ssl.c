@@ -32,10 +32,9 @@ int		parse_file(t_flg *flg, t_alp *al, char *arg)
 	char		line[BLOCK_SIZE + 1];
 	char		*str;
 	char		*temp;
-	int			len;
+	int			ret;
 	int			fd;
 
-	len = 0;
 	fd = open(arg, O_RDONLY);
 	if (check_error(flg, arg, fd) < 0)
 		return (1);
@@ -43,15 +42,15 @@ int		parse_file(t_flg *flg, t_alp *al, char *arg)
 	{
 		flg->fdname = arg;
 		str = ft_strnew(1);
-		while ((len = read(fd, line, BLOCK_SIZE)) > 0)
+		while ((ret = read(fd, line, BLOCK_SIZE)) > 0)
 		{
-			line[len] = '\0';
+			line[ret] = '\0';
 			temp = ft_strjoin(str, line);
 			ft_strdel(&str);
 			str = temp;
 		}
 		close(fd);
-		g_disp[flg->index](flg, al, str, len);
+		g_disp[flg->index](flg, al, str);
 		ft_strdel(&temp);
 	}
 	return (0);
@@ -62,21 +61,20 @@ void	parse_stdin(t_flg *flg, t_alp *al)
 	char	line[BLOCK_SIZE + 1];
 	char	*str;
 	char	*temp;
-	int		len;
+	int		ret;
 
-	len = 0;
 	flg->in = 1;
 	str = ft_strnew(1);
-	len = read(0, line, BLOCK_SIZE);
-	while (len > 0)
+	ret = read(0, line, BLOCK_SIZE);
+	while (ret > 0)
 	{
-		line[len] = '\0';
+		line[ret] = '\0';
 		temp = ft_strjoin(str, line);
 		ft_strdel(&str);
 		str = temp;
-		len = read(0, line, BLOCK_SIZE);
+		ret = read(0, line, BLOCK_SIZE);
 	}
-	g_disp[flg->index](flg, al, str, len);
+	g_disp[flg->index](flg, al, str);
 	ft_strdel(&temp);
 	flg->in = 0;
 }
@@ -85,7 +83,7 @@ void	parse_str(t_flg *flg, t_alp *al, char **argv)
 {
 	if (argv[flg->i])
 	{
-		g_disp[flg->index](flg, al, argv[flg->i], 0);
+		g_disp[flg->index](flg, al, argv[flg->i]);
 		flg->s = 0;
 		flg->i++;
 	}

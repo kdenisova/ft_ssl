@@ -12,7 +12,7 @@
 
 #include "ft_ssl.h"
 
-void			md5_init(t_fmd5 *fmd, char *str, int len)
+void			md5_init(t_fmd5 *fmd, char *str)
 {
 	fmd->hash[0] = 0x67452301;
 	fmd->hash[1] = 0xefcdab89;
@@ -22,10 +22,7 @@ void			md5_init(t_fmd5 *fmd, char *str, int len)
 	fmd->hash[5] = 0;
 	fmd->hash[6] = 0;
 	fmd->hash[7] = 0;
-	if (len)
-		fmd->len = len;
-	else
-		fmd->len = ft_strlen(str);
+	fmd->len = ft_strlen(str);
 	fmd->bitlen = fmd->len * 8;
 }
 
@@ -86,13 +83,13 @@ unsigned		*md5_final(t_fmd5 *fmd)
 	return (hash);
 }
 
-void			ft_md5(t_flg *flg, t_alp *al, char *arg, int len)
+void			ft_md5(t_flg *flg, t_alp *al, char *arg)
 {
 	t_fmd5		fmd;
 	unsigned	*x;
 	char		*temp;
 
-	md5_init(&fmd, arg, len);
+	md5_init(&fmd, arg);
 	temp = ft_strdup(arg);
 	if (fmd.len >= BLOCK_SIZE - 8)
 		arg = get_block_md5(&fmd, al, arg);

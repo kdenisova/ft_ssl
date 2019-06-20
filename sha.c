@@ -36,14 +36,14 @@ void	put_sha(t_flg *flg, t_fsha *fsh, char *arg, void (*f_put)(t_fsha *))
 	ft_putchar('\n');
 }
 
-void	ft_sha224(t_flg *flg, t_alp *al, char *arg, int len)
+void	ft_sha224(t_flg *flg, t_alp *al, char *arg)
 {
 	t_fsha		fsh;
 	unsigned	*w;
 	char		*temp;
 
 	temp = ft_strdup(arg);
-	sha224_init(&fsh, arg, len);
+	sha224_init(&fsh, arg);
 	if (fsh.len >= BLOCK_SIZE - 8)
 		arg = get_block_sha256(&fsh, al, arg);
 	w = ft_memalloc(sizeof(unsigned int) * 64);
@@ -62,14 +62,14 @@ void	ft_sha224(t_flg *flg, t_alp *al, char *arg, int len)
 	put_sha(flg, &fsh, temp, put_hash_sha256);
 }
 
-void	ft_sha256(t_flg *flg, t_alp *al, char *arg, int len)
+void	ft_sha256(t_flg *flg, t_alp *al, char *arg)
 {
 	t_fsha		fsh;
 	unsigned	*w;
 	char		*temp;
 
 	temp = ft_strdup(arg);
-	sha256_init(&fsh, arg, len);
+	sha256_init(&fsh, arg);
 	if (fsh.len >= BLOCK_SIZE - 8)
 		arg = get_block_sha256(&fsh, al, arg);
 	w = ft_memalloc(sizeof(unsigned int) * 64);
@@ -88,14 +88,14 @@ void	ft_sha256(t_flg *flg, t_alp *al, char *arg, int len)
 	put_sha(flg, &fsh, temp, put_hash_sha256);
 }
 
-void	ft_sha384(t_flg *flg, t_alp *al, char *arg, int len)
+void	ft_sha384(t_flg *flg, t_alp *al, char *arg)
 {
 	t_fsha			fsh;
 	unsigned long	*w;
 	char			*temp;
 
 	temp = ft_strdup(arg);
-	sha384_init(&fsh, arg, len);
+	sha384_init(&fsh, arg);
 	if (fsh.len >= SIZE_SHA - 16)
 		arg = get_block_sha512(&fsh, al, arg);
 	w = ft_memalloc(sizeof(unsigned long) * 80);
@@ -110,14 +110,14 @@ void	ft_sha384(t_flg *flg, t_alp *al, char *arg, int len)
 	put_sha(flg, &fsh, temp, put_hash_sha512);
 }
 
-void	ft_sha512(t_flg *flg, t_alp *al, char *arg, int len)
+void	ft_sha512(t_flg *flg, t_alp *al, char *arg)
 {
 	t_fsha			fsh;
 	unsigned long	*w;
 	char			*temp;
 
 	temp = ft_strdup(arg);
-	sha512_init(&fsh, arg, len);
+	sha512_init(&fsh, arg);
 	if (fsh.len >= SIZE_SHA - 16)
 		arg = get_block_sha512(&fsh, al, arg);
 	w = ft_memalloc(sizeof(unsigned long) * 80);
