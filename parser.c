@@ -24,9 +24,9 @@ void	parse_flag(t_flg *flg, char *arg)
 		flg->s = 1;
 	else if (!ft_strncmp(arg, "-", 1) && arg[1])
 	{
-		ft_printf("%s: illegal option -- %c\n", flg->alg, arg[1]);
+		ft_printf("%s: illegal option -- %c\n", g_name[flg->index], arg[1]);
 		ft_printf("usage: ft_ssl ");
-		ft_printf("%s [-pqr] [-s string] [files ...]\n", flg->alg);
+		ft_printf("%s [-pqr] [-s string] [files ...]\n", g_name[flg->index]);
 		exit(1);
 	}
 	else
@@ -81,9 +81,7 @@ void	parse_alg(t_flg *flg, t_alp *al, int argc, char **argv)
 	ft_strtolower(alg);
 	while (g_name[flg->index] != NULL && ft_strcmp(g_name[flg->index], alg))
 		flg->index++;
-	if (g_name[flg->index] != NULL)
-		flg->alg = ft_strdup(alg);
-	else
+	if (g_name[flg->index] == NULL)
 	{
 		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", argv[1]);
 		ft_putstr("Standard commands:\n\nMessage Digest commands:\n");
@@ -91,7 +89,8 @@ void	parse_alg(t_flg *flg, t_alp *al, int argc, char **argv)
 		ft_putstr("Cipher commands:\n");
 		exit(1);
 	}
-	free(alg);
+	ft_strdel(&alg);
+	//free(alg);
 	flag_init(flg, argv, argc);
 	alphabet_init(al);
 }

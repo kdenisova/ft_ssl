@@ -19,18 +19,19 @@ int		check_error(t_flg *flg, char *arg, int fd)
 	fstat(fd, &statbuf);
 	if (S_ISDIR(statbuf.st_mode))
 	{
-		ft_printf("%s: %s: Is a directory\n", flg->alg, arg);
+		ft_printf("%s: %s: Is a directory\n", g_name[flg->index], arg);
 		return (-1);
 	}
 	if (fd < 0)
-		ft_printf("%s: %s: No such file or directory\n", flg->alg, arg);
+		ft_printf("%s: %s: No such file or directory\n", g_name[flg->index], arg);
 	return (fd);
 }
 
 int		parse_file(t_flg *flg, t_alp *al, char *arg)
 {
-	char		*line;
+	char		line[BLOCK_SIZE + 1];
 	char		*str;
+	char		*temp;
 	int			len;
 	int			fd;
 
@@ -41,14 +42,15 @@ int		parse_file(t_flg *flg, t_alp *al, char *arg)
 	else
 	{
 		flg->fdname = arg;
-		str = ft_strdup("");
-		line = ft_strnew(BLOCK_SIZE);
+		str = ft_strnew(1);
 		while ((len = read(fd, line, BLOCK_SIZE)) > 0)
 		{
 			line[len] = '\0';
-			str = ft_strjoin(str, line);
+			temp = ft_strjoin(str, line);
+			ft_strdel(&str);
+			str = temp;
 		}
-		ft_strdel(&line);
+		ft_strdel(&temp);
 		close(fd);
 		g_disp[flg->index](flg, al, str, len);
 	}
@@ -57,22 +59,24 @@ int		parse_file(t_flg *flg, t_alp *al, char *arg)
 
 void	parse_stdin(t_flg *flg, t_alp *al)
 {
-	char	*line;
+	char	line[BLOCK_SIZE + 1];
 	char	*str;
+	char	*temp;
 	int		len;
 
 	len = 0;
 	flg->in = 1;
-	str = ft_strdup("");
-	line = ft_strnew(BLOCK_SIZE);
+	str = ft_strnew(1);
 	len = read(0, line, BLOCK_SIZE);
 	while (len > 0)
 	{
 		line[len] = '\0';
-		str = ft_strjoin(str, line);
+		temp = ft_strjoin(str, line);
+		ft_strdel(&str);
+		str = temp;
 		len = read(0, line, BLOCK_SIZE);
 	}
-	ft_strdel(&line);
+	ft_strdel(&temp);
 	g_disp[flg->index](flg, al, str, len);
 	flg->in = 0;
 }
@@ -87,7 +91,7 @@ void	parse_str(t_flg *flg, t_alp *al, char **argv)
 	}
 	else
 	{
-		ft_printf("%s: option requires an argument -- s\n", flg->alg);
+		ft_printf("%s: option requires an argument -- s\n", g_name[flg->index]);
 		ft_printf("usage: ./ft_ssl command [-pqr] [-s string] [files ...]\n");
 		exit(1);
 	}
@@ -119,6 +123,6 @@ int		main(int argc, char **argv)
 			}
 		}
 	}
-	//system("leaks ft_ssl");
+	system("leaks ft_ssl");
 	return (0);
 }

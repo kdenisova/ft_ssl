@@ -32,6 +32,7 @@ void	put_sha(t_flg *flg, t_fsha *fsh, char *arg, void (*f_put)(t_fsha *))
 	}
 	else if (flg->q)
 		(*f_put)(fsh);
+	ft_strdel(&arg);
 	ft_putchar('\n');
 }
 
@@ -58,7 +59,7 @@ void	ft_sha224(t_flg *flg, t_alp *al, char *arg, int len)
 	((char *)w)[fsh.round - 1] = (fsh.bitlen & 0x000000FF);
 	sha_stages(&fsh, al, w);
 	free(w);
-	put_sha(flg, &fsh, arg, put_hash_sha256);
+	put_sha(flg, &fsh, temp, put_hash_sha256);
 }
 
 void	ft_sha256(t_flg *flg, t_alp *al, char *arg, int len)
@@ -106,7 +107,7 @@ void	ft_sha384(t_flg *flg, t_alp *al, char *arg, int len)
 	}
 	sha512_stages(&fsh, al, w);
 	free(w);
-	put_sha(flg, &fsh, arg, put_hash_sha512);
+	put_sha(flg, &fsh, temp, put_hash_sha512);
 }
 
 void	ft_sha512(t_flg *flg, t_alp *al, char *arg, int len)
@@ -128,5 +129,5 @@ void	ft_sha512(t_flg *flg, t_alp *al, char *arg, int len)
 	}
 	sha512_stages(&fsh, al, w);
 	free(w);
-	put_sha(flg, &fsh, arg, put_hash_sha512);
+	put_sha(flg, &fsh, temp, put_hash_sha512);
 }

@@ -22,6 +22,7 @@ void	put_hash(unsigned *hash)
 		ft_printf("%02x", hash[i]);
 		i++;
 	}
+	free(hash);
 }
 
 void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
@@ -50,6 +51,7 @@ void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 	}
 	else if (flg->q)
 		put_hash(md5_final(fmd));
+	ft_strdel(&arg);
 	ft_putchar('\n');
 }
 
@@ -81,11 +83,11 @@ void	put_sha_s(t_flg *flg, t_fsha *fsh, char *arg, void (*f_put)(t_fsha *))
 {
 	char *alg;
 
-	alg = ft_strdup(flg->alg);
+	alg = ft_strdup(g_name[flg->index]);
 	if (flg->s)
 		ft_printf("%s(\"%s\")= ", ft_strtoupper(alg), arg);
 	else
 		ft_printf("%s(%s)= ", ft_strtoupper(alg), flg->fdname);
+	ft_strdel(&alg);
 	(*f_put)(fsh);
-	free(alg);
 }

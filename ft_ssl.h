@@ -30,7 +30,6 @@ typedef struct		s_flg
 	int				in;
 	int				index;
 	char			*fdname;
-	char			*alg;
 }					t_flg;
 
 typedef struct		s_alp
