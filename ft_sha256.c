@@ -51,34 +51,6 @@ unsigned	*sha256_update(t_fsha *fsh, unsigned int *w)
 	return (w);
 }
 
-char		*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg)
-{
-	unsigned	*w;
-
-	while (fsh->len >= BLOCK_SIZE - 8)
-	{
-		w = ft_memalloc(sizeof(unsigned int) * 64);
-		if (fsh->len < BLOCK_SIZE)
-		{
-			ft_memset(w, 0, sizeof(w));
-			ft_memcpy(w, arg, fsh->len);
-			((char *)w)[fsh->len] = 0x80;
-			sha256_stages(fsh, al, w);
-			arg = arg + fsh->len;
-			fsh->len = -1;
-		}
-		else
-		{
-			ft_memcpy(w, arg, BLOCK_SIZE);
-			sha256_stages(fsh, al, w);
-			arg = arg + BLOCK_SIZE;
-			fsh->len = fsh->len - BLOCK_SIZE;
-		}
-		free(w);
-	}
-	return (arg);
-}
-
 void		sha256_rounds(t_fsha *fsh, t_alp *al, unsigned *w)
 {
 	int			i;
@@ -124,4 +96,32 @@ void		sha256_stages(t_fsha *fsh, t_alp *al, unsigned *w)
 	fsh->hash[5] += al->f;
 	fsh->hash[6] += al->g;
 	fsh->hash[7] += al->h;
+}
+
+char		*get_block_sha256(t_fsha *fsh, t_alp *al, char *arg)
+{
+	unsigned	*w;
+
+	while (fsh->len >= BLOCK_SIZE - 8)
+	{
+		w = ft_memalloc(sizeof(unsigned int) * 64);
+		if (fsh->len < BLOCK_SIZE)
+		{
+			ft_memset(w, 0, sizeof(w));
+			ft_memcpy(w, arg, fsh->len);
+			((char *)w)[fsh->len] = 0x80;
+			sha256_stages(fsh, al, w);
+			arg = arg + fsh->len;
+			fsh->len = -1;
+		}
+		else
+		{
+			ft_memcpy(w, arg, BLOCK_SIZE);
+			sha256_stages(fsh, al, w);
+			arg = arg + BLOCK_SIZE;
+			fsh->len = fsh->len - BLOCK_SIZE;
+		}
+		free(w);
+	}
+	return (arg);
 }
