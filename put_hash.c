@@ -29,7 +29,7 @@ void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 {
 	if (flg->in)
 	{
-		if (flg->p)
+		if (flg->p == 1)
 			ft_printf("%s", arg);
 		put_hash(md5_final(fmd));
 	}
@@ -52,7 +52,6 @@ void	put_md5(t_flg *flg, t_fmd5 *fmd, char *arg)
 	else if (flg->q)
 		put_hash(md5_final(fmd));
 	ft_strdel(&arg);
-	ft_putchar('\n');
 }
 
 void	put_hash_sha512(t_fsha *fsh)

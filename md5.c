@@ -104,4 +104,5 @@ void			ft_md5(t_flg *flg, t_alp *al, char *arg)
 	stage_one(&fmd, al, x);
 	free(x);
 	put_md5(flg, &fmd, temp);
+	ft_printf("\n");
 }

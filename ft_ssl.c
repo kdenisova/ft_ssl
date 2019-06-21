@@ -23,7 +23,10 @@ int		check_error(t_flg *flg, char *arg, int fd)
 		return (-1);
 	}
 	if (fd < 0)
-		ft_printf("%s: %s: No such file or directory\n", g_name[flg->index], arg);
+	{
+		ft_printf("%s: ", g_name[flg->index]);
+		ft_printf("%s: No such file or directory\n", arg);
+	}
 	return (fd);
 }
 
@@ -121,6 +124,5 @@ int		main(int argc, char **argv)
 			}
 		}
 	}
-	//system("leaks ft_ssl");
 	return (0);
 }

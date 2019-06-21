@@ -16,7 +16,7 @@ void	put_sha(t_flg *flg, t_fsha *fsh, char *arg, void (*f_put)(t_fsha *))
 {
 	if (flg->in)
 	{
-		if (flg->p)
+		if (flg->p == 1)
 			ft_printf("%s", arg);
 		(*f_put)(fsh);
 	}
@@ -33,7 +33,7 @@ void	put_sha(t_flg *flg, t_fsha *fsh, char *arg, void (*f_put)(t_fsha *))
 	else if (flg->q)
 		(*f_put)(fsh);
 	ft_strdel(&arg);
-	ft_putchar('\n');
+	ft_printf("\n");
 }
 
 void	ft_sha224(t_flg *flg, t_alp *al, char *arg)

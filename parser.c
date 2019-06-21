@@ -53,6 +53,8 @@ void	flag_init(t_flg *flg, char **arg, int argv)
 			break ;
 	}
 	flg->i = i;
+	if (!arg[i] && (flg->r || flg->q))
+		flg->p = 2;
 	if ((!flg->p && !flg->s && arg[i]) || (flg->p && !flg->s && arg[i])
 		|| (i != argv - 1))
 		flg->fd = 1;
