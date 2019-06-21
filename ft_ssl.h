@@ -100,7 +100,7 @@ void				sha224_init(t_fsha *fsh, char *arg);
 void				sha256_init(t_fsha *fsh, char *arg);
 void				sha384_init(t_fsha *fsh, char *arg);
 void				sha512_init(t_fsha *fsh, char *arg);
-unsigned			*sha256_update(t_fsha *fsh, unsigned int *w);
+unsigned			*sha256_update(t_fsha *fsh, unsigned *w);
 unsigned long		*sha512_update(t_fsha *fsh, unsigned long *w);
 void				sha256_stages(t_fsha *fsh, t_alp *al, unsigned *w);
 void				sha512_stages(t_fsha *fsh, t_alp *al, unsigned long *w);

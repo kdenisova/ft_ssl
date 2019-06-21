@@ -31,7 +31,7 @@ const unsigned	g_k[64] = {
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-unsigned	*sha256_update(t_fsha *fsh, unsigned int *w)
+unsigned	*sha256_update(t_fsha *fsh, unsigned *w)
 {
 	int i;
 
