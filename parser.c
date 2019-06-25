@@ -87,8 +87,13 @@ void	parse_alg(t_flg *flg, t_alp *al, int argc, char **argv)
 	{
 		ft_printf("ft_ssl: Error: \'%s\' is an invalid command.\n\n", argv[1]);
 		ft_putstr("Standard commands:\n\nMessage Digest commands:\n");
-		ft_putstr("md5\nsha256\nsha512\n\n");
-		ft_putstr("Cipher commands:\n");
+		flg->index = 0;
+		while (g_name[flg->index] != NULL)
+		{
+			ft_printf("%s\n", g_name[flg->index]);
+			flg->index++;
+		}
+		ft_putstr("\nCipher commands:\n");
 		exit(1);
 	}
 	ft_strdel(&alg);
