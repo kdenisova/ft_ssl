@@ -34,13 +34,13 @@ The goal was to recreate part of the [OpenSSL](https://en.wikipedia.org/wiki/Ope
     
 * command opts: `[-pqr] [-s string] [files ...]`
 
-    -p, echo STDIN to STDOUT and append the checksum to STDOUT
+    >-p, echo STDIN to STDOUT and append the checksum to STDOUT
 
-    -q, quiet mode
+    >-q, quiet mode
 
-    -r, reverse the format of the output
+    >-r, reverse the format of the output
 
-    -s, print the sum of the given string
+    >-s, print the sum of the given string
 
 
 ## Examples
